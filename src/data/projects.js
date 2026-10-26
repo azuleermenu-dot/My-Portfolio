@@ -1,1 +1,42 @@
-export const projects=[{number:'01',category:'PERSONAL / DIGITAL IDENTITY',title:'ASNOR ALI\nPORTFOLIO',description:'A personal digital space built around story, craft and the way I think about the web.',technologies:['React','Vite','CSS'],tone:'identity',href:'#contact'},{number:'02',category:'BRAND / WEB EXPERIENCE',title:'WICKED\nCOFFEE',description:'A cinematic website concept for a coffee brand, built around atmosphere, branding and visual storytelling.',technologies:['React','CSS','Motion'],tone:'coffee',href:'#contact'},{number:'03',category:'PRODUCT / CONCEPT',title:'LOCAL\nTRANSPORT APP',description:'A transport application concept focused on maps, location and clear route information.',technologies:['React','Maps','Geolocation'],tone:'route',href:'#contact'},{number:'04',category:'GAME / SYSTEMS',title:'ROBLOX\nGAME PROJECT',description:'A game-development project exploring mining, collecting, progression and interconnected gameplay systems.',technologies:['Luau','Roblox Studio','Systems'],tone:'game',href:'#contact'}];
+export const projects = [
+  {
+    number: '01',
+    category: 'PERSONAL / DIGITAL IDENTITY',
+    title: 'ASNOR ALI\nPORTFOLIO',
+    description:
+      'A personal digital space built around story, craft and the way I think about the web.',
+    technologies: ['React', 'Vite', 'CSS'],
+    tone: 'identity',
+    href: '#contact',
+  },
+  {
+    number: '02',
+    category: 'BRAND / WEB EXPERIENCE',
+    title: 'WICKED\nCOFFEE',
+    description:
+      'A cinematic website concept for a coffee brand, built around atmosphere, branding and visual storytelling.',
+    technologies: ['React', 'CSS', 'Motion'],
+    tone: 'coffee',
+    href: '#contact',
+  },
+  {
+    number: '03',
+    category: 'PRODUCT / CONCEPT',
+    title: 'LOCAL\nTRANSPORT APP',
+    description:
+      'A transport application concept focused on maps, location and clear route information.',
+    technologies: ['React', 'Maps', 'Geolocation'],
+    tone: 'route',
+    href: '#contact',
+  },
+  {
+    number: '04',
+    category: 'GAME / SYSTEMS',
+    title: 'ROBLOX\nGAME PROJECT',
+    description:
+      'A game-development project exploring mining, collecting, progression and interconnected gameplay systems.',
+    technologies: ['Luau', 'Roblox Studio', 'Systems'],
+    tone: 'game',
+    href: '#contact',
+  },
+];
