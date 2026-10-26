@@ -38,6 +38,7 @@ A game-development project combining mining, collecting, and progression systems
 - React
 - Vite
 - JavaScript
+- Java
 - TypeScript
 - Next.js
 - HTML / CSS
