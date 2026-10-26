@@ -1,0 +1,1 @@
+export default function Footer(){return <footer className="footer"><div><strong>ASNOR ALI<span>.</span></strong><small>WEB DEVELOPER / 2026</small></div><a href="#top">BACK TO TOP ↑</a></footer>}
