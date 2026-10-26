@@ -1,18 +1,20 @@
+import '../styles/technology.css';
+
 const tech = [
-  { name: 'React', category: 'Frontend' },
-  { name: 'Vite', category: 'Build Tool' },
-  { name: 'JavaScript', category: 'Language' },
-  { name: 'Java', category: 'Language' },
-  { name: 'TypeScript', category: 'Language' },
-  { name: 'Next.js', category: 'Framework' },
-  { name: 'HTML / CSS', category: 'Web' },
-  { name: 'Git / GitHub', category: 'Development' },
-  { name: 'Vercel', category: 'Deployment' },
-  { name: 'Luau', category: 'Game Dev' },
-  { name: 'MongoDB', category: 'Database' },
-  { name: 'Python', category: 'Language' },
-  { name: 'PostgreSQL', category: 'Database' },
-  { name: 'NoSQL', category: 'Database' },
+  { name: 'React', category: 'Frontend', mark: 'RE' },
+  { name: 'Vite', category: 'Build Tool', mark: 'VI' },
+  { name: 'JavaScript', category: 'Language', mark: 'JS' },
+  { name: 'Java', category: 'Language', mark: 'JA' },
+  { name: 'TypeScript', category: 'Language', mark: 'TS' },
+  { name: 'Next.js', category: 'Framework', mark: 'NX' },
+  { name: 'HTML / CSS', category: 'Web', mark: 'HC' },
+  { name: 'Git / GitHub', category: 'Development', mark: 'GH' },
+  { name: 'Vercel', category: 'Deployment', mark: 'VE' },
+  { name: 'Luau', category: 'Game Dev', mark: 'LU' },
+  { name: 'MongoDB', category: 'Database', mark: 'MO' },
+  { name: 'Python', category: 'Language', mark: 'PY' },
+  { name: 'PostgreSQL', category: 'Database', mark: 'PG' },
+  { name: 'NoSQL', category: 'Database', mark: 'NS' },
 ];
 
 export default function Technology() {
@@ -32,8 +34,8 @@ export default function Technology() {
             <em>WORK WITH.</em>
           </h2>
           <p className="tech__description">
-            Technologies I use to design, build, deploy, and experiment with
-            digital experiences.
+            A focused collection of technologies I use to design, build,
+            deploy, and experiment with digital experiences.
           </p>
         </div>
 
@@ -44,11 +46,21 @@ export default function Technology() {
                 <span className="tech-card__number">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <span className="tech-card__arrow">↗</span>
+                <span className="tech-card__arrow" aria-hidden="true">
+                  ↗
+                </span>
               </div>
+
               <div className="tech-card__content">
-                <span className="tech-badge">{item.category}</span>
-                <h3>{item.name}</h3>
+                <span className="tech-badge" aria-hidden="true">
+                  {item.mark}
+                </span>
+                <div>
+                  <h3>{item.name}</h3>
+                  <span className="tech-card__category">
+                    {item.category}
+                  </span>
+                </div>
               </div>
             </article>
           ))}
