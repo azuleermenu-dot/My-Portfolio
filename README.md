@@ -44,7 +44,10 @@ A game-development project combining mining, collecting, and progression systems
 - Git / GitHub
 - Vercel
 - Luau
-- Roblox Studio
+- MongoDB
+- Python
+- PostgreSQL
+- NoSQL
 
 ## Design Direction
 
@@ -53,23 +56,6 @@ The portfolio intentionally avoids the typical developer-template look. It uses 
 ## Development
 
 This project uses React and Vite with a component-based structure and modern CSS. It is designed to remain lightweight and responsive without an unnecessary backend.
-
-### Run locally
-
-```bash
-npm install
-npm run dev
-```
-
-### Build
-
-```bash
-npm run build
-```
-
-## Contact
-
-Have an idea, website, or digital product in mind? Tell me what you're building.
 
 **Asnor Ali**  
 Web Developer / Creative Builder
