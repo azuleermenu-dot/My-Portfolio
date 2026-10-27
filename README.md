@@ -148,3 +148,5 @@ WEB DEVELOPER / CREATIVE BUILDER
 © 2026 Asnor Ali. All rights reserved.
 
 </div>
+
+> Portfolio note: this project is continuously refined as new ideas and builds are shipped.
