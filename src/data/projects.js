@@ -12,9 +12,6 @@ export const projects = [
     number: '04', category: 'MOBILE / TRANSPORT APP', title: 'INSTA\nWAY', description: 'An Android-first Philippine commute and navigation app built around routes, maps and practical transport information.', technologies: ['React Native', 'TypeScript', 'Supabase'], tone: 'route', href: 'https://github.com/azuleermenu-dot/InstaWay', demoUrl: null,
   },
   {
-    number: '05', category: 'PERSONAL / DIGITAL IDENTITY', title: 'ASNOR ALI\nPORTFOLIO', description: 'This portfolio itself — a personal digital space built around story, craft and the way I think about the web.', technologies: ['React', 'Vite', 'CSS'], tone: 'identity', href: 'https://github.com/azuleermenu-dot/My-Portfolio', demoUrl: 'https://asnor-ali-portfolio.vercel.app/',
-  },
-  {
-    number: '06', category: 'DEMO / CREATIVE WEBSITE', title: 'WICKED\nCOFFEE', description: 'A fictional cinematic coffee-brand concept created to demonstrate a premium client website experience.', technologies: ['Next.js', 'React', 'CSS'], tone: 'coffee', href: 'https://github.com/azuleermenu-dot/wicked-coffee', demoUrl: 'https://wicked-coffee-demo.vercel.app',
+    number: '05', category: 'DEMO / CREATIVE WEBSITE', title: 'WICKED\nCOFFEE', description: 'A fictional cinematic coffee-brand concept created to demonstrate a premium client website experience.', technologies: ['Next.js', 'React', 'CSS'], tone: 'coffee', href: 'https://github.com/azuleermenu-dot/wicked-coffee', demoUrl: 'https://wicked-coffee-demo.vercel.app',
   },
 ];
