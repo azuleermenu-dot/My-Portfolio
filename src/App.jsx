@@ -6,6 +6,7 @@ import Work from './components/Work';
 import Approach from './components/Approach';
 import Services from './components/Services';
 import Technology from './components/Technology';
+import Credentials from './components/Credentials';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
@@ -42,6 +43,7 @@ export default function App() {
         <Approach />
         <Services />
         <Technology />
+        <Credentials />
         <Contact />
       </main>
       <Footer />
