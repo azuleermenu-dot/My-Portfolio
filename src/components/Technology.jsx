@@ -1,20 +1,39 @@
 import '../styles/technology.css';
 
 const tech = [
+  // Frontend
+  { name: 'HTML5', category: 'Frontend', mark: 'HT' },
+  { name: 'CSS3', category: 'Frontend', mark: 'CS' },
+  { name: 'JavaScript (ES6+)', category: 'Frontend', mark: 'JS' },
   { name: 'React', category: 'Frontend', mark: 'RE' },
-  { name: 'Vite', category: 'Build Tool', mark: 'VI' },
-  { name: 'JavaScript', category: 'Language', mark: 'JS' },
-  { name: 'Java', category: 'Language', mark: 'JA' },
-  { name: 'TypeScript', category: 'Language', mark: 'TS' },
-  { name: 'Next.js', category: 'Framework', mark: 'NX' },
-  { name: 'HTML / CSS', category: 'Web', mark: 'HC' },
-  { name: 'Git / GitHub', category: 'Development', mark: 'GH' },
-  { name: 'Vercel', category: 'Deployment', mark: 'VE' },
-  { name: 'Luau', category: 'Game Dev', mark: 'LU' },
-  { name: 'MongoDB', category: 'Database', mark: 'MO' },
-  { name: 'Python', category: 'Language', mark: 'PY' },
+  { name: 'Next.js', category: 'Frontend', mark: 'NX' },
+  { name: 'Tailwind CSS', category: 'Frontend', mark: 'TW' },
+
+  // Backend
+  { name: 'Node.js', category: 'Backend', mark: 'NO' },
+  { name: 'Express.js', category: 'Backend', mark: 'EX' },
+  { name: 'Python', category: 'Backend', mark: 'PY' },
+  { name: 'REST APIs', category: 'Backend', mark: 'API' },
+  { name: 'SQL', category: 'Backend', mark: 'SQL' },
+
+  // Databases
   { name: 'PostgreSQL', category: 'Database', mark: 'PG' },
-  { name: 'NoSQL', category: 'Database', mark: 'NS' },
+  { name: 'MySQL', category: 'Database', mark: 'MY' },
+  { name: 'MongoDB', category: 'Database · Basics', mark: 'MO' },
+
+  // Tools & others
+  { name: 'Git & GitHub', category: 'Tools & Development', mark: 'GH' },
+  { name: 'Docker', category: 'Tools & Others', mark: 'DO' },
+  { name: 'VS Code', category: 'Tools & Others', mark: 'VS' },
+  { name: 'Postman', category: 'Tools & Others', mark: 'PM' },
+  { name: 'Firebase', category: 'Tools & Others · Basics', mark: 'FB' },
+
+  // Existing portfolio stack
+  { name: 'Vite', category: 'Build Tool', mark: 'VI' },
+  { name: 'TypeScript', category: 'Language', mark: 'TS' },
+  { name: 'Java', category: 'Language', mark: 'JA' },
+  { name: 'Vercel', category: 'Deployment', mark: 'VE' },
+  { name: 'Luau', category: 'Game Development', mark: 'LU' },
 ];
 
 export default function Technology() {
@@ -34,8 +53,9 @@ export default function Technology() {
             <em>WORK WITH.</em>
           </h2>
           <p className="tech__description">
-            A focused collection of technologies I use to design, build,
-            deploy, and experiment with digital experiences.
+            My current technical stack spans frontend and backend development,
+            databases, APIs, deployment, and the tools I use to build and ship
+            modern web applications.
           </p>
         </div>
 
