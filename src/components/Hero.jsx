@@ -16,11 +16,25 @@ export default function Hero() {
 
       <div className="hero__content">
         <p className="eyebrow">PERSONAL DIGITAL SPACE / 001</p>
-        <h1 className="display display--hero">
-          ASNOR
-          <br />
-          <em>ALI.</em>
-        </h1>
+
+        <div className="hero__identity">
+          <h1 className="display display--hero">
+            ASNOR
+            <br />
+            <em>ALI.</em>
+          </h1>
+
+          <div className="hero__portrait-wrap">
+            <div className="hero__portrait-frame">
+              <img
+                className="hero__portrait"
+                src="/asnor-ali.webp"
+                alt="Portrait of Asnor Ali"
+              />
+              <span className="hero__portrait-index">PORTRAIT / 2026</span>
+            </div>
+          </div>
+        </div>
 
         <div className="hero__bottom">
           <p className="hero__statement">
