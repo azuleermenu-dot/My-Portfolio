@@ -122,6 +122,10 @@ npm run dev
 npm run build
 ```
 
+### GitHub workflow
+
+Changes are developed through branches and pull requests so improvements can be reviewed, tracked, and merged cleanly.
+
 ---
 
 ## 07 — CONNECT
