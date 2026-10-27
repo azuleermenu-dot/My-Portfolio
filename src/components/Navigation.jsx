@@ -32,6 +32,7 @@ export default function Navigation() {
       <nav className={`nav__links ${open ? 'nav__links--open' : ''}`}>
         <a href="#story" onClick={close}>Story</a>
         <a href="#work" onClick={close}>Work</a>
+        <a href="#credentials" onClick={close}>Credentials</a>
         <a href="#services" onClick={close}>Services</a>
         <a href="#contact" onClick={close}>Contact</a>
       </nav>
