@@ -9,13 +9,13 @@ export default function Hero() {
       <div className="hero__grain" />
 
       <div className="hero__meta">
-        <span>WEB DEVELOPER</span>
-        <span>CREATIVE BUILDER</span>
+        <span>FREELANCE WEB DEVELOPER</span>
+        <span>INDEPENDENT / SELF-EMPLOYED</span>
         <span>PH / 2026</span>
       </div>
 
       <div className="hero__content">
-        <p className="eyebrow">PERSONAL DIGITAL SPACE / 001</p>
+        <p className="eyebrow">INDEPENDENT CREATIVE PRACTICE / 001</p>
         <div className="hero__identity">
           <h1 className="display display--hero">ASNOR<br /><em>ALI.</em></h1>
           <div className="hero__portrait-wrap">
@@ -31,7 +31,7 @@ export default function Hero() {
           <a href="https://github.com/azuleermenu-dot" target="_blank" rel="noreferrer"><Github size={18} /><span>GitHub</span></a>
         </nav>
         <div className="hero__bottom">
-          <p className="hero__statement">I build digital experiences where design, technology and ideas meet.</p>
+          <p className="hero__statement">I work independently with clients to create thoughtful websites and digital experiences for their ideas and businesses.</p>
           <a className="circle-link" href="#story" onClick={(event) => { event.preventDefault(); document.querySelector('.nav__links a[href="#story"]')?.click(); }} aria-label="Explore my story"><ArrowDownRight size={23} /></a>
         </div>
       </div>
