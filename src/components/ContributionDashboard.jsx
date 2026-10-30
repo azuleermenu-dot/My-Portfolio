@@ -3,7 +3,7 @@ import { Github, ExternalLink, GitCommitHorizontal } from 'lucide-react';
 
 const username = 'azuleermenu-dot';
 const profileUrl = `https://github.com/${username}`;
-const apiUrl = `https://github-contributions-api.jogruber.de/v4/${username}?y=last`;
+const apiUrl = '/api/github-contributions';
 const colors = ['#17191d', '#493a28', '#80613c', '#b58a52', '#d2a86b'];
 
 function dateKey(date) {
@@ -16,13 +16,15 @@ export default function ContributionDashboard() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetch(apiUrl, { signal: controller.signal })
+    fetch(apiUrl, { signal: controller.signal, cache: 'no-store' })
       .then((response) => {
-        if (!response.ok) throw new Error('Unable to load contribution data');
+        if (!response.ok) throw new Error('Unable to load GitHub contribution data');
         return response.json();
       })
       .then((result) => {
-        if (!Array.isArray(result.contributions)) throw new Error('Invalid contribution data');
+        if (!Array.isArray(result.contributions) || typeof result.total !== 'number') {
+          throw new Error('Invalid GitHub contribution data');
+        }
         setData(result);
       })
       .catch((err) => {
@@ -68,7 +70,7 @@ export default function ContributionDashboard() {
     return { cells, monthLabels, columns: Math.ceil((end - start + 1) / (7 * 86400000)) };
   }, [data]);
 
-  const total = data?.total?.lastYear ?? (data?.contributions || []).reduce((sum, day) => sum + day.count, 0);
+  const total = data?.total ?? 0;
 
   return (
     <section className="contribution reveal" aria-labelledby="contribution-title">
@@ -77,7 +79,7 @@ export default function ContributionDashboard() {
           <p className="eyebrow">OPEN SOURCE / GITHUB</p>
           <h3 id="contribution-title">CONTRIBUTION <em>ACTIVITY.</em></h3>
           <p className="contribution__description">
-            A live view of my GitHub contribution history, updated from my public profile.
+            Live contribution activity read directly from GitHub's public contribution calendar.
           </p>
         </div>
         <a className="contribution__profile" href={profileUrl} target="_blank" rel="noreferrer">
@@ -89,7 +91,7 @@ export default function ContributionDashboard() {
         <div className="contribution__chart-head">
           <span><GitCommitHorizontal size={15} /> CONTRIBUTIONS OVER THE LAST YEAR</span>
           <span className="contribution__total">
-            {data ? `${total.toLocaleString()} contributions` : error ? 'LIVE DATA UNAVAILABLE' : 'LOADING ACTIVITY…'}
+            {data ? `${total.toLocaleString()} contributions` : error ? 'GITHUB DATA UNAVAILABLE' : 'SYNCING WITH GITHUB…'}
           </span>
           <span className="contribution__legend">LESS <i /><i /><i /><i /> MORE</span>
         </div>
@@ -113,9 +115,9 @@ export default function ContributionDashboard() {
             </div>
           </div>
         ) : (
-          <div className="contribution__loading">{error ? 'Could not load the live contribution graph. Open GitHub to view the latest activity.' : 'Loading your GitHub contribution history…'}</div>
+          <div className="contribution__loading">{error ? 'GitHub did not return contribution data. Open your profile to verify your activity.' : 'Loading your actual GitHub contribution history…'}</div>
         )}
-        <p className="contribution__note">Daily counts are based on the public contribution activity shown by GitHub. Select the graph to open the full profile.</p>
+        <p className="contribution__note">Counts and daily activity come from GitHub itself. Click View GitHub for your complete profile.</p>
       </div>
     </section>
   );
