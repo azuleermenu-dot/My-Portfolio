@@ -1,26 +1,21 @@
 const chapters = [
   [
-    '01',
     'BEGINNING',
     'It started with curiosity — wondering how websites were made, then opening things up and trying to make them myself.',
   ],
   [
-    '02',
     'LEARNING',
     'I learned by building. Small experiments became real interfaces, and every broken thing became another lesson.',
   ],
   [
-    '03',
     'BUILDING',
     'I kept making: websites, concepts and systems. The process taught me to care about both what people see and what makes it work.',
   ],
   [
-    '04',
     'NOW',
     'Today, I’m focused on creating digital experiences with stronger visual direction, cleaner engineering and more intentional details.',
   ],
   [
-    '05',
     'NEXT',
     'There is still a lot to learn. That is part of the point — keep experimenting, keep refining, keep building.',
   ],
@@ -51,9 +46,9 @@ export default function Story() {
       </div>
 
       <div className="story__chapters">
-        {chapters.map(([number, title, paragraph]) => (
-          <article className="chapter reveal" key={number}>
-            <div className="chapter__num">{number}</div>
+        {chapters.map(([title, paragraph]) => (
+          <article className="chapter reveal" key={title}>
+            
             <div className="chapter__title">{title}</div>
             <p>{paragraph}</p>
             <span className="chapter__line" />
