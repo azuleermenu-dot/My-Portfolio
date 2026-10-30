@@ -21,6 +21,16 @@ export const projects = [
   },
   {
     number: '03',
+    category: 'WEB / FICTIONAL RESTAURANT CONCEPT',
+    title: 'TALEN & TIDE',
+    description: 'A fictional coastal restaurant website concept, rebranded from the earlier Ember & Salt demo. The full website experience is preserved, with illustrative menu, location, contact details, and booking interactions clearly identified as fictional portfolio content.',
+    technologies: ['HTML', 'CSS', 'JavaScript'],
+    tone: 'identity',
+    href: 'https://github.com/azuleermenu-dot/Demo-Website',
+    demoUrl: null,
+  },
+  {
+    number: '03',
     category: 'EDTECH / IN DEVELOPMENT',
     title: 'MUNI',
     description: 'A student-focused study planner and review platform in development, bringing schedules, reminders, learning resources, flashcards, and practice activities into one experience.',
@@ -30,7 +40,7 @@ export const projects = [
     demoUrl: null,
   },
   {
-    number: '04',
+    number: '05',
     category: 'GAME / SYSTEMS DEVELOPMENT',
     title: 'ROBLOX STUDIO\\nPROJECT',
     description: 'A Roblox game-development project exploring gameplay systems, eggs, pets, plots, and player-owned pens.',
@@ -40,7 +50,7 @@ export const projects = [
     demoUrl: null,
   },
   {
-    number: '05',
+    number: '06',
     category: 'MOBILE / TRANSPORT APP CONCEPT',
     title: 'INSTA\\nWAY',
     description: 'An Android-first Philippine commute and navigation app concept exploring maps, routes, and practical transport information.',
