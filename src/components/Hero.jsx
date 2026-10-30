@@ -1,4 +1,4 @@
-import { ArrowDownRight } from 'lucide-react';
+import { ArrowDownRight, Facebook, Github, Linkedin } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -23,10 +23,13 @@ export default function Hero() {
               <img className="hero__portrait" src="/asnor-ali.webp" alt="Portrait of Asnor Ali" width="600" height="750" fetchPriority="high" decoding="async" />
               <span className="hero__portrait-index">PORTRAIT / 2026</span>
             </div>
-            <img className="asta-companion" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38JmUnMaaRRtQLkv4cn1Bj0fDuh/7ada038d-e946-45ca-81bd-c7a6ef78a486.gif" alt="Asta from Black Clover in a looping anime action animation" width="540" height="304" loading="eager" decoding="async" />
-            <span className="asta-caption" aria-hidden="true">NEVER GIVE UP.</span>
           </div>
         </div>
+        <nav className="hero__socials" aria-label="Social links">
+          <a href="https://www.linkedin.com/in/asnor-ali-006b50446" target="_blank" rel="noreferrer"><Linkedin size={17} /><span>LinkedIn</span></a>
+          <a href="https://www.facebook.com/share/1GT5huzMcA/" target="_blank" rel="noreferrer"><Facebook size={17} /><span>Facebook</span></a>
+          <a href="https://github.com/azuleermenu-dot" target="_blank" rel="noreferrer"><Github size={18} /><span>GitHub</span></a>
+        </nav>
         <div className="hero__bottom">
           <p className="hero__statement">I build digital experiences where design, technology and ideas meet.</p>
           <a className="circle-link" href="#story" onClick={(event) => { event.preventDefault(); document.querySelector('.nav__links a[href="#story"]')?.click(); }} aria-label="Explore my story"><ArrowDownRight size={23} /></a>
