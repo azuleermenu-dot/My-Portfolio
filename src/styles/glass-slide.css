@@ -2,7 +2,7 @@
 html { background: var(--bg); }
 body { overflow: hidden; }
 .site-shell { height: 100svh; overflow: hidden; }
-.slide-track { display:flex; flex-flow:row nowrap; align-items:stretch; width:100vw; height:100svh; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scroll-behavior:smooth; overscroll-behavior-x:contain; scrollbar-width:none; -ms-overflow-style:none; touch-action:pan-x pan-y; }
+.slide-track { display:flex; flex-flow:row nowrap; align-items:stretch; width:100vw; height:100svh; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; scroll-behavior:auto; scroll-padding-inline:0; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; scrollbar-width:none; -ms-overflow-style:none; touch-action:pan-x pan-y; }
 .slide-track::-webkit-scrollbar { display:none; }
 .slide-track > section,.slide-track > footer { flex:0 0 100vw; width:100vw; min-width:100vw; max-width:none; height:100svh; min-height:100svh; max-height:100svh; margin:0; overflow-x:hidden; overflow-y:auto; overscroll-behavior-y:contain; scroll-snap-align:start; scroll-snap-stop:always; }
 .slide-track > section:not(.hero) { padding-top:112px; padding-bottom:100px; }
