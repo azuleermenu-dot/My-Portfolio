@@ -13,6 +13,7 @@ import Contact from './components/Contact';
 import ChatAssistant from './components/ChatAssistant';
 
 const slideNames = ['Home', 'Story', 'Work', 'Approach', 'Services', 'Technology', 'Credentials', 'Contact'];
+const slideIds = ['top', 'story', 'work', 'approach', 'services', 'technology', 'credentials', 'contact'];
 
 export default function App() {
   const trackRef = useRef(null);
@@ -38,49 +39,27 @@ export default function App() {
     };
   }, []);
 
-  // Motion adds movement to the existing glass design without changing its
-  // surfaces, colors, blur, borders, layout, or slide navigation.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
-
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const duration = reduceMotion ? 0.01 : 0.72;
     const easing = [0.22, 1, 0.36, 1];
 
-    const stopHero = inView(
-      '.hero__content',
-      (element) => {
-        animate(
-          Array.from(element.children),
-          { opacity: [0, 1], y: [18, 0] },
-          {
-            duration,
-            delay: reduceMotion ? 0 : stagger(0.1),
-            ease: easing,
-          },
-        );
-      },
-      { root: track, amount: 0.15 },
-    );
+    const stopHero = inView('.hero__content', (element) => {
+      animate(Array.from(element.children), { opacity: [0, 1], y: [18, 0] }, {
+        duration, delay: reduceMotion ? 0 : stagger(0.1), ease: easing,
+      });
+    }, { root: track, amount: 0.15 });
 
-    const stopReveals = inView(
-      '.reveal',
-      (element) => {
-        const controls = animate(
-          element,
-          { opacity: 1, y: 0 },
-          { duration: reduceMotion ? 0.01 : 0.65, ease: easing },
-        );
-        return () => controls.stop();
-      },
-      { root: track, amount: 0.08 },
-    );
+    const stopReveals = inView('.reveal', (element) => {
+      const controls = animate(element, { opacity: 1, y: 0 }, {
+        duration: reduceMotion ? 0.01 : 0.75, ease: easing,
+      });
+      return () => controls.stop();
+    }, { root: track, amount: 0.08 });
 
-    return () => {
-      stopHero();
-      stopReveals();
-    };
+    return () => { stopHero(); stopReveals(); };
   }, []);
 
   const goToSlide = useCallback((index) => {
@@ -90,25 +69,29 @@ export default function App() {
     slideAnimationRef.current?.stop();
     const target = next * track.clientWidth;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      track.style.scrollSnapType = '';
       track.scrollLeft = target;
       return;
     }
-    // Give programmatic slide changes a soft, controlled glide.
-    // Finger swipes continue to use the browser's native scrolling.
-    slideAnimationRef.current = animate(
-      track,
-      { scrollLeft: target },
-      { duration: 0.95, ease: [0.16, 1, 0.3, 1] },
-    );
+
+    // Temporarily release snap points so Motion can control the full glide.
+    track.style.scrollSnapType = 'none';
+    const controls = animate(track, { scrollLeft: target }, {
+      duration: 1.2,
+      ease: [0.22, 1, 0.36, 1],
+    });
+    slideAnimationRef.current = controls;
+    controls.finished.then(() => {
+      if (slideAnimationRef.current === controls) {
+        track.style.scrollSnapType = '';
+        slideAnimationRef.current = null;
+      }
+    }).catch(() => {});
   }, []);
 
   const goToSection = useCallback((id) => {
-    const track = trackRef.current;
-    const target = document.getElementById(id);
-    if (!track || !target) return;
-    const slide = target.closest('section, footer');
-    const index = Array.from(track.children).indexOf(slide);
-    if (index >= 0) goToSlide(index);
+    const index = slideIds.indexOf(id);
+    if (index !== -1) goToSlide(index);
   }, [goToSlide]);
 
   useEffect(() => {
@@ -126,14 +109,7 @@ export default function App() {
       <Navigation onNavigate={goToSection} activeSlide={activeSlide} />
       <ChatAssistant />
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
-        <Hero />
-        <Story />
-        <Work />
-        <Approach />
-        <Services />
-        <Technology />
-        <Credentials />
-        <Contact />
+        <Hero /><Story /><Work /><Approach /><Services /><Technology /><Credentials /><Contact />
       </main>
       <div className="slide-controls" aria-label="Slide navigation">
         <button type="button" onClick={() => goToSlide(activeSlide - 1)} disabled={activeSlide === 0} aria-label="Previous slide"><ArrowLeft size={16} /></button>
