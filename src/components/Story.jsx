@@ -25,7 +25,7 @@ export default function Story() {
   return (
     <section id="story" className="story section">
       <div className="section-label">
-        <span>02</span>
+        
         <span>MY STORY</span>
         <span>PERSONAL / ONGOING</span>
       </div>
