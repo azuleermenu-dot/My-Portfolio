@@ -21,7 +21,7 @@ export default function Services() {
   return (
     <section id="services" className="services section">
       <div className="section-label">
-        <span>05</span>
+        
         <span>WHAT I BUILD</span>
         <span>CAPABILITIES</span>
       </div>
