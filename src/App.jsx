@@ -17,6 +17,7 @@ const slideNames = ['Home', 'Story', 'Work', 'Approach', 'Services', 'Technology
 export default function App() {
   const trackRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
+  const slideAnimationRef = useRef(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -86,7 +87,19 @@ export default function App() {
     const track = trackRef.current;
     if (!track) return;
     const next = Math.max(0, Math.min(slideNames.length - 1, index));
-    track.scrollTo({ left: next * track.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    slideAnimationRef.current?.stop();
+    const target = next * track.clientWidth;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      track.scrollLeft = target;
+      return;
+    }
+    // Give programmatic slide changes a soft, controlled glide.
+    // Finger swipes continue to use the browser's native scrolling.
+    slideAnimationRef.current = animate(
+      track,
+      { scrollLeft: target },
+      { duration: 0.95, ease: [0.16, 1, 0.3, 1] },
+    );
   }, []);
 
   const goToSection = useCallback((id) => {
