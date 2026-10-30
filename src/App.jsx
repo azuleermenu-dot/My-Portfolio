@@ -63,7 +63,7 @@ export default function App() {
   const goToSlide = useCallback((index) => {
     const track = trackRef.current;
     if (!track) return;
-    const next = Math.max(0, Math.min(slideNames.length - 1, index));
+    const next = Math.max(0, Math.min(slideIds.length - 1, index));
     slideAnimationRef.current?.stop();
     const target = next * track.clientWidth;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
