@@ -40,7 +40,7 @@ button { border: 0; background: none; }
 .hero__edge { position: absolute; bottom: 28px; left: clamp(20px,6vw,90px); font: 9px "DM Mono",ui-monospace,monospace; color: var(--muted); }
 .story__intro,.work__intro,.services__head { padding: 110px 0 120px; }
 .story__chapters { border-top: 1px solid var(--line); }
-.chapter { min-height: 185px; display: grid; grid-template-columns: 80px 1fr 1.2fr 20px; align-items: center; gap: 30px; border-bottom: 1px solid var(--line); }
+.chapter { min-height: 185px; display: grid; grid-template-columns: 1fr 1.2fr 20px; align-items: center; gap: 30px; border-bottom: 1px solid var(--line); }
 .chapter__num,.chapter__title { font: 11px "DM Mono",ui-monospace,monospace; color: var(--muted); letter-spacing: .08em; }
 .chapter__title { color: var(--paper); }
 .chapter p { max-width: 550px; margin: 0; color: #b3afa7; font-size: 16px; line-height: 1.5; }
@@ -86,7 +86,7 @@ button { border: 0; background: none; }
 .marquee { position: absolute; bottom: 28px; left: 0; width: 100%; overflow: hidden; white-space: nowrap; font: 10px "DM Mono"; }
 .marquee div { display: inline-block; animation: marquee 24s linear infinite; }
 .service-list { border-top: 1px solid var(--line); }
-.service-row { min-height: 155px; display: grid; grid-template-columns: 70px 1.3fr 1fr 50px; align-items: center; gap: 30px; border-bottom: 1px solid var(--line); transition: background .25s ease; }
+.service-row { min-height: 155px; display: grid; grid-template-columns: 1.3fr 1fr 50px; align-items: center; gap: 30px; border-bottom: 1px solid var(--line); transition: background .25s ease; }
 .service-row:hover { background: #10100f; }
 .service-row__num { font: 10px "DM Mono"; color: var(--muted); }
 .service-row h3 { font-size: clamp(27px,4vw,57px); letter-spacing: -.055em; margin: 0; }
@@ -111,9 +111,9 @@ button { border: 0; background: none; }
 @keyframes pulse { 50% { opacity: .35; transform: scale(.7); } }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @media(max-width:900px) {
-  .chapter { grid-template-columns: 40px 1fr 20px; gap: 16px; padding: 24px 0; }.chapter p { grid-column: 2; font-size: 14px; }
+  .chapter { grid-template-columns: 1fr 20px; gap: 16px; padding: 24px 0; }.chapter p { grid-column: 2; font-size: 14px; }
   .project,.project:nth-child(even) { grid-template-columns: 1fr; }.project:nth-child(even) .project__visual-wrap { order: 0; }.project__visual-wrap { min-height: 52vh; }
-  .service-row { grid-template-columns: 35px 1fr 30px; gap: 14px; padding: 24px 0; }.service-row p { grid-column: 2; }.service-row__arrow { grid-column: 3; grid-row: 1; }
+  .service-row { grid-template-columns: 1fr 30px; gap: 14px; padding: 24px 0; }.service-row p { grid-column: 2; }.service-row__arrow { grid-column: 3; grid-row: 1; }
   .tech__layout { gap: 35px; }.contact { grid-template-columns: 1fr; gap: 55px; }
 }
 @media(max-width:800px) {
