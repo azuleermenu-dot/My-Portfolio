@@ -34,13 +34,13 @@ export default function Credentials() {
       </article>
       <div className="credentials__details">
         <div className="credentials__modules reveal">
-          <div className="credentials__heading"><span>01</span> COMPLETED MODULES &amp; ACHIEVEMENTS</div>
+          <div className="credentials__heading">COMPLETED MODULES &amp; ACHIEVEMENTS</div>
           <div className="credentials__module-grid">
-            {modules.map((item, index) => <div className="credentials__module" key={item}><span>{String(index + 1).padStart(2, '0')}</span><strong>{item}</strong><CheckCircle2 size={15} /></div>)}
+            {modules.map((item) => <div className="credentials__module" key={item}><strong>{item}</strong><CheckCircle2 size={15} /></div>)}
           </div>
         </div>
         <div className="credentials__skills reveal">
-          <div className="credentials__heading"><span>02</span> TECHNICAL SKILLS</div>
+          <div className="credentials__heading">TECHNICAL SKILLS</div>
           {skills.map((skill) => <div className="credentials__skill" key={skill.group}><span>{skill.group}</span><p>{skill.items}</p></div>)}
         </div>
       </div>
