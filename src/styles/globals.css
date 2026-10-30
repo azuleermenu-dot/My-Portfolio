@@ -130,3 +130,12 @@ button { border: 0; background: none; }
 @media(prefers-reduced-motion:reduce) {
   *,*::before,*::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+.footer { min-height:100svh; max-width:none; padding:clamp(40px,9vw,130px); display:flex; flex-direction:column; justify-content:space-between; align-items:flex-start; gap:50px; border-top:1px solid var(--line); background:#0b0b0a; }
+.footer > div { display:grid; gap:12px; }
+.footer strong { font-size:clamp(58px,12vw,160px); line-height:.9; letter-spacing:-.09em; }
+.footer small,.footer>a { font:10px "DM Mono",ui-monospace,monospace; color:var(--muted); letter-spacing:.12em; }
+.footer__socials { display:flex; flex-wrap:wrap; gap:24px; }
+.footer__socials a { display:inline-flex; align-items:center; gap:9px; font-size:12px; }
+.footer__socials a:hover,.footer>a:hover { color:var(--accent); }
+@media(max-width:800px) { .footer { padding:30px 22px 100px; gap:35px; } .footer strong { font-size:clamp(54px,15vw,100px); } .footer__socials { gap:18px; } }
