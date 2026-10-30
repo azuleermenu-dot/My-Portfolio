@@ -30,7 +30,7 @@ export const projects = [
     demoUrl: null,
   },
   {
-    number: '03',
+    number: '04',
     category: 'EDTECH / IN DEVELOPMENT',
     title: 'MUNI',
     description: 'A student-focused study planner and review platform in development, bringing schedules, reminders, learning resources, flashcards, and practice activities into one experience.',
