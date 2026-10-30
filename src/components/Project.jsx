@@ -62,7 +62,6 @@ export default function Project({ project }) {
     <article className="project reveal">
       <div className="project__visual-wrap">
         <Visual tone={project.tone} demoUrl={project.demoUrl} title={project.title.replace('\n', ' ')} />
-        <span className="project__number">{project.number}</span>
       </div>
 
       <div className="project__info">
