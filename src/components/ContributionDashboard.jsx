@@ -1,7 +1,8 @@
 import { Github, ExternalLink, GitCommitHorizontal } from 'lucide-react';
 
 const profileUrl = 'https://github.com/azuleermenu-dot';
-const chartUrl = 'https://ghchart.rshah.org/d2a86b/azuleermenu-dot';
+// Explicit dark theme keeps zero-activity days transparent/dim instead of white.
+const chartUrl = 'https://ghchart.xqsit94.in/dark:d2a86b/azuleermenu-dot';
 
 export default function ContributionDashboard() {
   return (
