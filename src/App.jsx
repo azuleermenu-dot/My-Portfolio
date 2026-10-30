@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { animate, inView, stagger } from 'motion';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import Story from './components/Story';
@@ -12,7 +11,6 @@ import Credentials from './components/Credentials';
 import Contact from './components/Contact';
 import ChatAssistant from './components/ChatAssistant';
 
-const slideNames = ['Home', 'Story', 'Work', 'Approach', 'Services', 'Technology', 'Credentials', 'Contact'];
 const slideIds = ['top', 'story', 'work', 'approach', 'services', 'technology', 'credentials', 'contact'];
 
 export default function App() {
@@ -28,7 +26,7 @@ export default function App() {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
         const width = track.clientWidth || window.innerWidth;
-        setActiveSlide(Math.max(0, Math.min(slideNames.length - 1, Math.round(track.scrollLeft / width))));
+        setActiveSlide(Math.max(0, Math.min(slideIds.length - 1, Math.round(track.scrollLeft / width))));
         frame = 0;
       });
     };
@@ -116,11 +114,7 @@ export default function App() {
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
         <Hero /><Story /><Work /><Approach /><Services /><Technology /><Credentials /><Contact />
       </main>
-      <div className="slide-controls" aria-label="Slide navigation">
-        <button type="button" onClick={() => goToSlide(activeSlide - 1)} disabled={activeSlide === 0} aria-label="Previous slide"><ArrowLeft size={16} /></button>
-        <span><strong>{String(activeSlide + 1).padStart(2, '0')}</strong><i />{String(slideNames.length).padStart(2, '0')} <small>{slideNames[activeSlide]}</small></span>
-        <button type="button" onClick={() => goToSlide(activeSlide + 1)} disabled={activeSlide === slideNames.length - 1} aria-label="Next slide"><ArrowRight size={16} /></button>
-      </div>
+
     </div>
   );
 }
