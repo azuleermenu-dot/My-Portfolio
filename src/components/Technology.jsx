@@ -60,12 +60,9 @@ export default function Technology() {
         </div>
 
         <div className="tech-grid reveal">
-          {tech.map((item, index) => (
+          {tech.map((item) => (
             <article className="tech-card" key={item.name}>
               <div className="tech-card__top">
-                <span className="tech-card__number">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 <span className="tech-card__arrow" aria-hidden="true">
                   ↗
                 </span>
