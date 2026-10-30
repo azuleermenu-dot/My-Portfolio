@@ -1,7 +1,7 @@
 const USERNAME = 'azuleermenu-dot';
 
 function readAttribute(tag, name) {
-  const match = tag.match(new RegExp('\\\\b' + name + '=["\\\\']([^"\\\\']*)["\\\\']', 'i'));
+  const match = tag.match(new RegExp('\\b' + name + '=["\\']([^"\\']*)["\\']', 'i'));
   return match?.[1] ?? null;
 }
 
@@ -12,22 +12,22 @@ function stripHtml(value) {
     .replace(/&amp;/g, '&')
     .replace(/&#39;|&apos;/g, "'")
     .replace(/&quot;/g, '"')
-    .replace(/\\s+/g, ' ')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
 function parseContributionCalendar(html) {
   const contributions = [];
-  const cells = html.match(/<td\\b[^>]*>[\\s\\S]*?<\\/td>/gi) ?? [];
+  const cells = html.match(/<td\b[^>]*>[\s\S]*?<\/td>/gi) ?? [];
 
   for (const cell of cells) {
-    const openingTag = cell.match(/<td\\b[^>]*>/i)?.[0] ?? '';
+    const openingTag = cell.match(/<td\b[^>]*>/i)?.[0] ?? '';
     const date = readAttribute(openingTag, 'data-date');
     const levelValue = readAttribute(openingTag, 'data-level');
-    if (!date || !/^\\d{4}-\\d{2}-\\d{2}$/.test(date)) continue;
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
 
     const text = stripHtml(cell);
-    const countMatch = text.match(/(\\d[\\d,]*)\\s+contributions?/i);
+    const countMatch = text.match(/(\d[\d,]*)\s+contributions?/i);
     const count = countMatch ? Number(countMatch[1].replace(/,/g, '')) : 0;
     const level = Number(levelValue);
 
@@ -53,7 +53,7 @@ export default async function handler(req, res) {
     const from = new Date(to);
     from.setUTCFullYear(from.getUTCFullYear() - 1);
 
-    const url = new URL(`https://github.com/users/${USERNAME}/contributions`);
+    const url = new URL(\`https://github.com/users/\${USERNAME}/contributions\`);
     url.searchParams.set('from', from.toISOString().slice(0, 10));
     url.searchParams.set('to', to.toISOString().slice(0, 10));
 
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      throw new Error(`GitHub returned HTTP ${response.status}`);
+      throw new Error(\`GitHub returned HTTP \${response.status}\`);
     }
 
     const html = await response.text();
