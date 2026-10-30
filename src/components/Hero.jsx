@@ -16,42 +16,23 @@ export default function Hero() {
 
       <div className="hero__content">
         <p className="eyebrow">PERSONAL DIGITAL SPACE / 001</p>
-
         <div className="hero__identity">
-          <h1 className="display display--hero">
-            ASNOR
-            <br />
-            <em>ALI.</em>
-          </h1>
-
+          <h1 className="display display--hero">ASNOR<br /><em>ALI.</em></h1>
           <div className="hero__portrait-wrap">
             <div className="hero__portrait-frame">
-              <img
-                className="hero__portrait"
-                src="/asnor-ali.webp"
-                alt="Portrait of Asnor Ali"
-              />
+              <img className="hero__portrait" src="/asnor-ali.webp" alt="Portrait of Asnor Ali" width="600" height="750" fetchPriority="high" decoding="async" />
               <span className="hero__portrait-index">PORTRAIT / 2026</span>
             </div>
+            <img className="asta-companion" src="/asta-companion.svg" alt="Animated Asta-inspired Black Clover character companion" width="180" height="230" />
+            <span className="asta-caption" aria-hidden="true">NEVER GIVE UP.</span>
           </div>
         </div>
-
         <div className="hero__bottom">
-          <p className="hero__statement">
-            I build digital experiences where design, technology and ideas meet.
-          </p>
-
-          <a
-            className="circle-link"
-            href="#story"
-            aria-label="Explore my story"
-          >
-            <ArrowDownRight size={23} />
-          </a>
+          <p className="hero__statement">I build digital experiences where design, technology and ideas meet.</p>
+          <a className="circle-link" href="#story" onClick={(event) => { event.preventDefault(); document.querySelector('.nav__links a[href="#story"]')?.click(); }} aria-label="Explore my story"><ArrowDownRight size={23} /></a>
         </div>
       </div>
-
-      <div className="hero__edge">SCROLL TO EXPLORE ↓</div>
+      <div className="hero__edge">SWIPE OR USE ARROWS TO EXPLORE ↓</div>
     </section>
   );
 }
