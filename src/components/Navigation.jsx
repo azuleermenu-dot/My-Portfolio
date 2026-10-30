@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ArrowUpRight, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const links = [
   ['story', 'Story', 1],
@@ -31,7 +31,6 @@ export default function Navigation({ onNavigate, activeSlide = 0 }) {
       <nav className={`nav__links ${open ? 'nav__links--open' : ''}`} aria-label="Main navigation">
         {links.map(([id, label, index]) => <a key={id} className={activeSlide === index ? 'is-active' : ''} href={`#${id}`} onClick={(event) => navigate(event, id)} aria-current={activeSlide === index ? 'page' : undefined}>{label}</a>)}
       </nav>
-      <a className={`nav__cta ${activeSlide === 7 ? 'is-active' : ''}`} href="#contact" onClick={(event) => navigate(event, 'contact')} aria-current={activeSlide === 7 ? 'page' : undefined}>Let's talk <ArrowUpRight size={15} /></a>
     </header>
   );
 }
