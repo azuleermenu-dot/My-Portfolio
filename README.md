@@ -6,7 +6,7 @@
 
 **I build digital experiences where design, technology and ideas meet.**
 
-[![Live Portfolio](https://img.shields.io/badge/VIEW%20PORTFOLIO-%E2%86%97-111111?style=for-the-badge&labelColor=f2eee7&color=111111)](https://my-portfolio-mu-fawn-25.vercel.app/)
+[![Live Portfolio](https://img.shields.io/badge/VIEW%20PORTFOLIO-%E2%86%97-111111?style=for-the-badge&labelColor=f2eee7&color=111111)](asnorali.vercel.app)
 [![GitHub](https://img.shields.io/badge/GITHUB-AZN-111111?style=for-the-badge&logo=github&logoColor=white)](https://github.com/azuleermenu-dot)
 
 </div>
