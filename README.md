@@ -134,7 +134,7 @@ Have an idea, website, or digital product in mind?
 
 **Let's make something real.**
 
-📧 **Email:** asnorali404@gmail.com  
+📧 **Email:** asnorali.dev@gmail.com  
 🔗 **Portfolio:** [my-portfolio-mu-fawn-25.vercel.app](https://my-portfolio-mu-fawn-25.vercel.app/)  
 💻 **GitHub:** [@azuleermenu-dot](https://github.com/azuleermenu-dot)
 
