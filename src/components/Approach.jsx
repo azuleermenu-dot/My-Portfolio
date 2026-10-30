@@ -1,45 +1,20 @@
 export default function Approach() {
   return (
-    <section className="approach section">
+    <section id="approach" className="approach section">
       <div className="approach__mark">04</div>
-
       <div className="approach__content reveal">
         <p className="eyebrow">APPROACH / PHILOSOPHY</p>
         <h2 className="display">
           GOOD WORK IS FELT
           <br />
-          <em>
-            BEFORE IT'S
-            <br />
-            EXPLAINED.
-          </em>
+          <em>BEFORE IT'S<br />EXPLAINED.</em>
         </h2>
-
         <div className="approach__text">
-          <p>
-            Clear ideas.
-            <br />
-            Strong visual hierarchy.
-            <br />
-            Responsive details.
-            <br />
-            Motion with a purpose.
-            <br />
-            Code that can evolve.
-          </p>
-          <p>
-            I care about the space between an idea and the finished experience
-            — the decisions that make a digital product feel considered.
-          </p>
+          <p>Clear ideas.<br />Strong visual hierarchy.<br />Responsive details.<br />Motion with a purpose.<br />Code that can evolve.</p>
+          <p>I care about the space between an idea and the finished experience — the decisions that make a digital product feel considered.</p>
         </div>
       </div>
-
-      <div className="marquee" aria-hidden="true">
-        <div>
-          DESIGN WITH INTENT / BUILD WITH CARE / DESIGN WITH INTENT / BUILD WITH
-          CARE /
-        </div>
-      </div>
+      <div className="marquee" aria-hidden="true"><div>DESIGN WITH INTENT / BUILD WITH CARE / DESIGN WITH INTENT / BUILD WITH CARE /</div></div>
     </section>
   );
 }
