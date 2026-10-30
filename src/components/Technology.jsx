@@ -69,24 +69,27 @@ export default function Technology() {
               </div>
 
               <div className="tech-card__content">
-                <div className="tech-card__logo" title={item.name}>
-                  {item.logo ? (
-                    <img
-                      src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${item.logo}`}
-                      alt={item.name}
-                      loading="lazy"
-                      onError={(event) => {
-                        event.currentTarget.hidden = true;
-                        event.currentTarget.nextElementSibling.hidden = false;
-                      }}
-                    />
-                  ) : null}
-                  <span className="tech-badge-fallback" hidden aria-hidden="true">
-                    {item.mark}
-                  </span>
-                  {!item.logo && <span className="tech-badge-fallback" aria-hidden="true">{item.mark}</span>}
+                <div className="tech-card__identity">
+                  <div className="tech-card__logo" aria-hidden="true">
+                    {item.logo ? (
+                      <img
+                        src={`https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${item.logo}`}
+                        alt=""
+                        loading="lazy"
+                        onError={(event) => {
+                          event.currentTarget.hidden = true;
+                          event.currentTarget.nextElementSibling.hidden = false;
+                        }}
+                      />
+                    ) : null}
+                    <span className="tech-badge-fallback" hidden>{item.mark}</span>
+                    {!item.logo && <span className="tech-badge-fallback">{item.mark}</span>}
+                  </div>
+                  <div className="tech-card__text">
+                    <h3>{item.name}</h3>
+                    <span className="tech-card__category">{item.category}</span>
+                  </div>
                 </div>
-                <span className="tech-card__category">{item.category}</span>
               </div>
             </article>
           ))}
