@@ -111,9 +111,9 @@ button { border: 0; background: none; }
 @keyframes pulse { 50% { opacity: .35; transform: scale(.7); } }
 @keyframes marquee { to { transform: translateX(-50%); } }
 @media(max-width:900px) {
-  .chapter { grid-template-columns: 1fr 20px; gap: 16px; padding: 24px 0; }.chapter p { grid-column: 2; font-size: 14px; }
+  .chapter { grid-template-columns: 1fr 20px; gap: 16px; padding: 24px 0; }.chapter p { grid-column: 1; font-size: 14px; }.chapter__line { grid-column: 2; grid-row: 1 / span 2; }
   .project,.project:nth-child(even) { grid-template-columns: 1fr; }.project:nth-child(even) .project__visual-wrap { order: 0; }.project__visual-wrap { min-height: 52vh; }
-  .service-row { grid-template-columns: 1fr 30px; gap: 14px; padding: 24px 0; }.service-row p { grid-column: 2; }.service-row__arrow { grid-column: 3; grid-row: 1; }
+  .service-row { grid-template-columns: 1fr 30px; gap: 14px; padding: 24px 0; }.service-row p { grid-column: 1 / -1; }.service-row__arrow { grid-column: 2; grid-row: 1; }
   .tech__layout { gap: 35px; }.contact { grid-template-columns: 1fr; gap: 55px; }
 }
 @media(max-width:800px) {
