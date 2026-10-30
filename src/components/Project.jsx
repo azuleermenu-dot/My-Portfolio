@@ -51,6 +51,7 @@ function Visual({ tone, demoUrl, title }) {
   return (
     <div className={`project-visual project-visual--${tone}`} aria-label={`${title} project preview`}>
       <div className="visual-noise" />
+      {tone === 'identity' && <><span className="visual-letter">M</span><div className="visual-orbit" /></>}
       {tone === 'route' && <><div className="route-map"><i /><i /><i /><i /></div><div className="route-pin">+</div></>}
       {tone === 'game' && <><div className="game-cube" /><div className="game-grid" /><div className="game-particle p1" /><div className="game-particle p2" /></>}
     </div>
