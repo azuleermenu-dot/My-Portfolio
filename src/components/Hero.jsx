@@ -23,7 +23,7 @@ export default function Hero() {
               <img className="hero__portrait" src="/asnor-ali.webp" alt="Portrait of Asnor Ali" width="600" height="750" fetchPriority="high" decoding="async" />
               <span className="hero__portrait-index">PORTRAIT / 2026</span>
             </div>
-            <img className="asta-companion" src="/asta-companion.svg" alt="Animated Asta-inspired Black Clover character companion" width="180" height="230" />
+            <img className="asta-companion" src="https://d2ol7oe51mr4n9.cloudfront.net/user_38JmUnMaaRRtQLkv4cn1Bj0fDuh/7ada038d-e946-45ca-81bd-c7a6ef78a486.gif" alt="Asta from Black Clover in a looping anime action animation" width="540" height="304" loading="eager" decoding="async" />
             <span className="asta-caption" aria-hidden="true">NEVER GIVE UP.</span>
           </div>
         </div>
