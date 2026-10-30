@@ -1,74 +1,104 @@
 const USERNAME = 'azuleermenu-dot';
 
-function decodeEntities(value) {
-  return value
-    .replace(/&amp;/g, '&')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/&nbsp;/g, ' ');
-}
-
-function parseCountFromLabel(label) {
-  if (!label) return null;
-  const text = decodeEntities(label).replace(/,/g, '');
-  const match = text.match(/(\d+)\s+contributions?/i);
-  return match ? Number(match[1]) : null;
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
+    return res.status(503).json({ error: 'GitHub sync is not configured. Add GITHUB_TOKEN to the Vercel project environment.' });
+  }
+
   try {
-    const response = await fetch(`https://github.com/users/${USERNAME}/contributions`, {
+    const to = new Date();
+    const from = new Date(to);
+    from.setUTCFullYear(from.getUTCFullYear() - 1);
+
+    const query = `
+      query ContributionCalendar($login: String!, $from: DateTime!, $to: DateTime!) {
+        user(login: $login) {
+          contributionsCollection(from: $from, to: $to) {
+            contributionCalendar {
+              totalContributions
+              weeks {
+                contributionDays {
+                  date
+                  contributionCount
+                  contributionLevel
+                }
+              }
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch('https://api.github.com/graphql', {
+      method: 'POST',
       headers: {
-        Accept: 'text/html, */*',
-        'User-Agent': 'Mozilla/5.0 (compatible; AsnorPortfolio/1.0)',
-        Referer: `https://github.com/${USERNAME}`,
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Accept: 'application/vnd.github+json',
       },
+      body: JSON.stringify({
+        query,
+        variables: {
+          login: USERNAME,
+          from: from.toISOString(),
+          to: to.toISOString(),
+        },
+      }),
       signal: AbortSignal.timeout(15000),
     });
 
-    if (!response.ok) throw new Error(`GitHub returned HTTP ${response.status}`);
-    const html = await response.text();
-    const rects = html.match(/<rect\b[^>]*>/gi) ?? [];
-    const contributions = [];
-
-    for (const rect of rects) {
-      const date = rect.match(/\bdata-date=["']([^"']+)["']/i)?.[1];
-      if (!date) continue;
-      const label = rect.match(/\baria-label=["']([^"']+)["']/i)?.[1];
-      const countAttr = rect.match(/\bdata-count=["'](\d+)["']/i)?.[1];
-      const levelAttr = rect.match(/\bdata-level=["'](\d+)["']/i)?.[1];
-      const labelCount = parseCountFromLabel(label);
-      const count = Number(countAttr ?? labelCount ?? 0);
-      const level = levelAttr == null
-        ? (count === 0 ? 0 : count < 3 ? 1 : count < 6 ? 2 : count < 10 ? 3 : 4)
-        : Math.max(0, Math.min(4, Number(levelAttr)));
-      contributions.push({ date, count, level });
+    if (!response.ok) {
+      throw new Error(`GitHub GraphQL returned HTTP ${response.status}`);
     }
 
-    const uniqueDays = [...new Map(contributions.map((day) => [day.date, day])).values()];
-    if (uniqueDays.length < 300) {
-      throw new Error(`GitHub returned only ${uniqueDays.length} calendar days; expected roughly 365`);
+    const payload = await response.json();
+    if (payload.errors?.length) {
+      throw new Error(payload.errors.map((item) => item.message).join('; '));
     }
 
-    uniqueDays.sort((a, b) => a.date.localeCompare(b.date));
-    const total = uniqueDays.reduce((sum, day) => sum + day.count, 0);
+    const calendar = payload.data?.user?.contributionsCollection?.contributionCalendar;
+    if (!calendar || !Array.isArray(calendar.weeks)) {
+      throw new Error('GitHub did not return a contribution calendar for this account.');
+    }
+
+    const levelMap = {
+      NONE: 0,
+      FIRST_QUARTILE: 1,
+      SECOND_QUARTILE: 2,
+      THIRD_QUARTILE: 3,
+      FOURTH_QUARTILE: 4,
+    };
+
+    const contributions = calendar.weeks.flatMap((week) =>
+      week.contributionDays.map((day) => ({
+        date: day.date,
+        count: day.contributionCount,
+        level: levelMap[day.contributionLevel] ?? 0,
+      }))
+    );
+
+    if (!contributions.length) {
+      throw new Error('GitHub returned an empty contribution calendar.');
+    }
+
     res.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1800');
     return res.status(200).json({
       username: USERNAME,
-      source: 'github.com',
-      total,
-      contributions: uniqueDays,
+      source: 'github-graphql',
+      total: calendar.totalContributions,
+      contributions,
       updatedAt: new Date().toISOString(),
     });
   } catch (error) {
     console.error('GitHub contribution sync failed:', error);
     return res.status(502).json({
-      error: 'GitHub contribution data could not be parsed',
+      error: 'GitHub contribution data could not be loaded',
       detail: error.message,
     });
   }
