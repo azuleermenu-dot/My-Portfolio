@@ -18,7 +18,6 @@ export default function Contact() {
       <div className="contact__glow" />
 
       <div className="section-label section-label--light">
-        <span>07</span>
         <span>CONTACT</span>
         <span>OPEN FOR IDEAS</span>
       </div>
@@ -42,12 +41,12 @@ export default function Contact() {
 
       <form className="inquiry reveal" onSubmit={submit}>
         <div className="form-field">
-          <label htmlFor="name">01 / NAME</label>
+          <label htmlFor="name">NAME</label>
           <input id="name" name="name" required placeholder="Your name" />
         </div>
 
         <div className="form-field">
-          <label htmlFor="email">02 / EMAIL</label>
+          <label htmlFor="email">EMAIL</label>
           <input
             id="email"
             name="email"
@@ -58,7 +57,7 @@ export default function Contact() {
         </div>
 
         <div className="form-field">
-          <label htmlFor="project">03 / PROJECT TYPE</label>
+          <label htmlFor="project">PROJECT TYPE</label>
           <select id="project" name="project" defaultValue="">
             <option value="" disabled>Select one</option>
             <option>Business website</option>
@@ -70,7 +69,7 @@ export default function Contact() {
         </div>
 
         <div className="form-field">
-          <label htmlFor="message">04 / MESSAGE</label>
+          <label htmlFor="message">MESSAGE</label>
           <textarea
             id="message"
             name="message"
