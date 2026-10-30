@@ -74,15 +74,20 @@ export default function App() {
       return;
     }
 
-    // Temporarily release snap points so Motion can control the full glide.
+    // Animate a numeric Motion value and write it to the real scroll container.
+    // Animating the DOM "scrollLeft" property directly is not reliable across browsers.
     track.style.scrollSnapType = 'none';
-    const controls = animate(track, { scrollLeft: target }, {
-      duration: 1.2,
+    const controls = animate(track.scrollLeft, target, {
+      duration: 0.85,
       ease: [0.22, 1, 0.36, 1],
+      onUpdate: (value) => {
+        track.scrollLeft = value;
+      },
     });
     slideAnimationRef.current = controls;
     controls.finished.then(() => {
       if (slideAnimationRef.current === controls) {
+        track.scrollLeft = target;
         track.style.scrollSnapType = '';
         slideAnimationRef.current = null;
       }
