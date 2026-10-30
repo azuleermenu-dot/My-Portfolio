@@ -1,7 +1,6 @@
 export default function Approach() {
   return (
     <section id="approach" className="approach section">
-      <div className="approach__mark">04</div>
       <div className="approach__content reveal">
         <p className="eyebrow">APPROACH / PHILOSOPHY</p>
         <h2 className="display">
