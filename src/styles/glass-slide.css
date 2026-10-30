@@ -50,7 +50,9 @@ body { overflow: hidden; }
 .cv-card__copy span { font:9px "DM Mono",monospace; letter-spacing:.1em; color:var(--accent); }.cv-card__copy h3 { margin:7px 0 4px; font-size:clamp(17px,2vw,23px); }.cv-card__copy p { margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
 @media(max-width:800px) {
   .nav { top:10px; width:calc(100% - 22px); height:56px; padding:0 10px 0 17px; gap:12px; }.nav__toggle { z-index:22; }
-  .nav__links { position:fixed; inset:66px 0 auto; padding:18px; background:rgba(22,22,22,.9); border:1px solid rgba(255,255,255,.14); border-radius:26px; box-shadow:0 22px 45px rgba(0,0,0,.3); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); }
+  .nav { z-index:50; }
+  .nav__toggle { position:relative; z-index:62; }
+  .nav__links { position:absolute; z-index:61; top:calc(100% + 10px); left:0; right:0; inset-inline:auto; padding:18px; background:rgba(22,22,22,.94); border:1px solid rgba(255,255,255,.14); border-radius:26px; box-shadow:0 22px 45px rgba(0,0,0,.3); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); }
   .nav__links--open { display:flex; }.nav__links a { font-size:21px; padding:8px 4px; }.nav__cta { display:none; }
   .slide-track > section:not(.hero) { padding-top:94px; padding-bottom:86px; }.slide-track > .hero { padding-top:100px; padding-bottom:70px; }
   .slide-track > .work,.slide-track > .technology,.slide-track > .contact,.slide-track > .approach { padding-left:20px; padding-right:20px; }
