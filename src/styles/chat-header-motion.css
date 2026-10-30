@@ -1,0 +1,46 @@
+.portfolio-chat{position:fixed;z-index:80;right:clamp(16px,3vw,34px);bottom:clamp(18px,3vw,30px);font-family:inherit}
+.portfolio-chat__launcher{display:flex;align-items:center;gap:10px;padding:14px 18px;border:1px solid rgba(210,168,107,.65);border-radius:999px;background:var(--paper);color:var(--bg);box-shadow:0 12px 45px #0008;cursor:pointer;font-size:12px;font-weight:700;transition:transform .2s ease,box-shadow .2s ease}
+.portfolio-chat__launcher:hover{transform:translateY(-3px);box-shadow:0 16px 50px #000a}
+.portfolio-chat__launcher.is-open{padding:12px;border-radius:50%;background:#24231f;color:var(--paper)}
+.portfolio-chat__panel{position:absolute;right:0;bottom:66px;width:min(370px,calc(100vw - 28px));height:min(540px,calc(100svh - 125px));display:flex;flex-direction:column;overflow:hidden;border:1px solid var(--line-strong);border-radius:20px;background:#11110ff5;box-shadow:0 24px 90px #000b;backdrop-filter:blur(22px);animation:chat-in .28s cubic-bezier(.2,.8,.2,1)}
+.portfolio-chat__header{display:flex;align-items:center;gap:11px;padding:15px;border-bottom:1px solid var(--line);background:#ffffff06}
+.portfolio-chat__avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:#d2a86b1c;color:var(--accent);border:1px solid #d2a86b55}
+.portfolio-chat__header>div:nth-child(2){flex:1;display:grid;gap:4px}
+.portfolio-chat__header strong{font-size:13px}.portfolio-chat__header small{font:9px 'DM Mono',monospace;color:var(--muted)}
+.portfolio-chat__header small i{display:inline-block;width:6px;height:6px;margin-right:5px;border-radius:50%;background:#8dbb8b}
+.portfolio-chat__header button{display:grid;place-items:center;color:var(--muted);padding:5px;cursor:pointer}
+.portfolio-chat__messages{flex:1;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin}
+.portfolio-chat__message{max-width:88%;display:grid;gap:6px;align-self:flex-start}
+.portfolio-chat__message--user{align-self:flex-end}
+.portfolio-chat__message span{padding:12px 13px;border:1px solid var(--line);border-radius:14px 14px 14px 4px;background:#ffffff08;color:var(--paper);font-size:12px;line-height:1.55;white-space:pre-wrap}
+.portfolio-chat__message--user span{background:#d2a86b;color:#17130d;border-color:#d2a86b;border-radius:14px 14px 4px 14px}
+.portfolio-chat__message small{font:8px 'DM Mono',monospace;letter-spacing:.08em;color:var(--muted)}
+.portfolio-chat__message--user small{text-align:right}
+.portfolio-chat__suggestions{display:flex;flex-wrap:wrap;gap:7px;padding:0 14px 12px}
+.portfolio-chat__suggestions button{border:1px solid var(--line-strong);border-radius:999px;padding:8px 10px;color:var(--accent);font-size:10px;cursor:pointer}
+.portfolio-chat__form{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+.portfolio-chat__form input{min-width:0;flex:1;border:1px solid var(--line-strong);border-radius:999px;padding:11px 14px;background:#ffffff08;color:var(--paper);font-size:12px;outline:none}
+.portfolio-chat__form input:focus{border-color:var(--accent)}
+.portfolio-chat__form button{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:var(--accent);color:#17130d;cursor:pointer}
+.portfolio-chat__form button:disabled{opacity:.4;cursor:not-allowed}
+.portfolio-chat__note{text-align:center;margin:0;padding:0 10px 11px;color:var(--muted);font:8px 'DM Mono',monospace}
+@keyframes chat-in{from{opacity:0;transform:translateY(12px) scale(.98)}to{opacity:1;transform:none}}
+.nav{animation:nav-drop .8s cubic-bezier(.2,.8,.2,1) both}
+.nav__brand{animation:brand-in .9s .12s both}
+.nav__links a{animation:nav-link-in .55s both}
+.nav__links a:nth-child(1){animation-delay:.18s}.nav__links a:nth-child(2){animation-delay:.25s}.nav__links a:nth-child(3){animation-delay:.32s}.nav__links a:nth-child(4){animation-delay:.39s}.nav__links a:nth-child(5){animation-delay:.46s}
+.nav__cta{animation:nav-link-in .6s .5s both}
+.hero__content>.eyebrow{animation:hero-rise .8s .2s both}
+.hero__identity{animation:hero-rise .9s .3s both}
+.hero__socials{animation:hero-rise .8s .55s both}
+.hero__bottom{animation:hero-rise .8s .65s both}
+.hero__orb--one{animation:orb-breathe 12s ease-in-out infinite alternate}
+.hero__grid{animation:grid-drift 35s linear infinite alternate}
+@keyframes nav-drop{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:none}}
+@keyframes brand-in{from{opacity:0;letter-spacing:.3em}to{opacity:1;letter-spacing:-.08em}}
+@keyframes nav-link-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes hero-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes orb-breathe{from{transform:scale(.94) translate3d(0,0,0);opacity:.07}to{transform:scale(1.08) translate3d(-2%,3%,0);opacity:.14}}
+@keyframes grid-drift{from{background-position:0 0}to{background-position:45px 30px}}
+@media(max-width:800px){.portfolio-chat{right:14px;bottom:16px}.portfolio-chat__panel{bottom:62px;height:min(500px,calc(100svh - 105px))}.nav__links a{animation:none}}
+@media(prefers-reduced-motion:reduce){.portfolio-chat__panel,.nav,.nav__brand,.nav__links a,.nav__cta,.hero__content>.eyebrow,.hero__identity,.hero__socials,.hero__bottom,.hero__orb--one,.hero__grid{animation:none!important}}
