@@ -1,6 +1,6 @@
 import { ArrowUpRight, Mail } from 'lucide-react';
 
-const email = 'asnorali404@gmail.com';
+const email = 'asnorali.dev@gmail.com';
 
 export default function Contact() {
   const submit = (event) => {
