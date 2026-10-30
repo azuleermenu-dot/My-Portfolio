@@ -1,21 +1,17 @@
 const services = [
   [
-    '01',
     'BUSINESS WEBSITES',
     'Clear, expressive websites designed around a real brand and its people.',
   ],
   [
-    '02',
     'LANDING PAGES',
     'Focused pages that communicate one strong idea without unnecessary noise.',
   ],
   [
-    '03',
     'WEB APPLICATIONS',
     'Useful interfaces and interactive products built to grow with the idea.',
   ],
   [
-    '04',
     'PERSONAL PORTFOLIOS',
     'Distinct digital spaces that make someone’s work and story feel memorable.',
   ],
@@ -40,9 +36,9 @@ export default function Services() {
       </div>
 
       <div className="service-list">
-        {services.map(([number, title, description]) => (
-          <article className="service-row reveal" key={number}>
-            <span className="service-row__num">{number}</span>
+        {services.map(([title, description]) => (
+          <article className="service-row reveal" key={title}>
+            
             <h3>{title}</h3>
             <p>{description}</p>
             <span className="service-row__arrow">↗</span>
