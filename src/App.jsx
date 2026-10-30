@@ -9,6 +9,7 @@ import Services from './components/Services';
 import Technology from './components/Technology';
 import Credentials from './components/Credentials';
 import Contact from './components/Contact';
+import ChatAssistant from './components/ChatAssistant';
 
 const slideNames = ['Home', 'Story', 'Work', 'Approach', 'Services', 'Technology', 'Credentials', 'Contact'];
 
@@ -82,6 +83,7 @@ export default function App() {
   return (
     <div className="site-shell">
       <Navigation onNavigate={goToSection} />
+      <ChatAssistant />
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
         <Hero />
         <Story />
