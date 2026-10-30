@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { animate, inView, stagger } from 'motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
@@ -36,22 +37,49 @@ export default function App() {
     };
   }, []);
 
+  // Motion adds movement to the existing glass design without changing its
+  // surfaces, colors, blur, borders, layout, or slide navigation.
   useEffect(() => {
-    const elements = document.querySelectorAll('.reveal');
-    if (!('IntersectionObserver' in window)) {
-      elements.forEach((element) => element.classList.add('is-visible'));
-      return;
-    }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.08, rootMargin: '0px 0px -3% 0px' });
-    elements.forEach((element) => observer.observe(element));
-    return () => observer.disconnect();
+    const track = trackRef.current;
+    if (!track) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const duration = reduceMotion ? 0.01 : 0.72;
+    const easing = [0.22, 1, 0.36, 1];
+
+    const stopHero = inView(
+      '.hero__content',
+      (element) => {
+        animate(
+          Array.from(element.children),
+          { opacity: [0, 1], y: [18, 0] },
+          {
+            duration,
+            delay: reduceMotion ? 0 : stagger(0.1),
+            ease: easing,
+          },
+        );
+      },
+      { root: track, amount: 0.15 },
+    );
+
+    const stopReveals = inView(
+      '.reveal',
+      (element) => {
+        const controls = animate(
+          element,
+          { opacity: 1, y: 0 },
+          { duration: reduceMotion ? 0.01 : 0.65, ease: easing },
+        );
+        return () => controls.stop();
+      },
+      { root: track, amount: 0.08 },
+    );
+
+    return () => {
+      stopHero();
+      stopReveals();
+    };
   }, []);
 
   const goToSlide = useCallback((index) => {
