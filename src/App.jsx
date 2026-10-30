@@ -82,7 +82,7 @@ export default function App() {
 
   return (
     <div className="site-shell">
-      <Navigation onNavigate={goToSection} />
+      <Navigation onNavigate={goToSection} activeSlide={activeSlide} />
       <ChatAssistant />
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
         <Hero />
