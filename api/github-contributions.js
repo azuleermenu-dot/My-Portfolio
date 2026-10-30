@@ -19,8 +19,7 @@ export default async function handler(req, res) {
     if (!response.ok) throw new Error(\`GitHub returned HTTP \${response.status}\`);
 
     const html = await response.text();
-    const svg = html.match(/<svg\b[\s\S]*?<\/svg>/i)?.[0] ?? html;
-    const rects = svg.match(/<rect\b[^>]*>/gi) ?? [];
+    const rects = html.match(/<rect\b[^>]*>/gi) ?? [];
     const contributions = [];
 
     for (const rect of rects) {
@@ -37,20 +36,20 @@ export default async function handler(req, res) {
       contributions.push({ date, count, level });
     }
 
-    if (contributions.length < 300) {
-      throw new Error(\`GitHub calendar parse returned only \${contributions.length} days\`);
+    const uniqueDays = [...new Map(contributions.map((day) => [day.date, day])).values()];
+    if (uniqueDays.length < 300) {
+      throw new Error(\`GitHub returned only \${uniqueDays.length} calendar days; expected roughly 365\`);
     }
 
-    contributions.sort((a, b) => a.date.localeCompare(b.date));
-    const total = contributions.reduce((sum, day) => sum + day.count, 0);
+    uniqueDays.sort((a, b) => a.date.localeCompare(b.date));
+    const total = uniqueDays.reduce((sum, day) => sum + day.count, 0);
 
     res.setHeader('Cache-Control', 's-maxage=900, stale-while-revalidate=1800');
-    res.setHeader('Access-Control-Allow-Origin', '*');
     return res.status(200).json({
       username: USERNAME,
       source: 'github.com',
       total,
-      contributions,
+      contributions: uniqueDays,
       updatedAt: new Date().toISOString(),
     });
   } catch (error) {
