@@ -1,11 +1,11 @@
 import { projects } from '../data/projects';
 import Project from './Project';
+import ContributionDashboard from './ContributionDashboard';
 
 export default function Work() {
   return (
     <section id="work" className="work section">
       <div className="section-label">
-        
         <span>SELECTED WORK</span>
         <span>PROJECTS / CONCEPTS</span>
       </div>
@@ -18,6 +18,8 @@ export default function Work() {
           <em>BUILT &amp; EXPLORED.</em>
         </h2>
       </div>
+
+      <ContributionDashboard />
 
       <div className="projects">
         {projects.map((project) => (
