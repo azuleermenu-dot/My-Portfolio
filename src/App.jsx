@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
@@ -20,16 +20,28 @@ export default function App() {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+    let frame = 0;
     const onScroll = () => {
-      const width = track.clientWidth || window.innerWidth;
-      setActiveSlide(Math.max(0, Math.min(slideNames.length - 1, Math.round(track.scrollLeft / width))));
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        const width = track.clientWidth || window.innerWidth;
+        setActiveSlide(Math.max(0, Math.min(slideNames.length - 1, Math.round(track.scrollLeft / width))));
+        frame = 0;
+      });
     };
     track.addEventListener('scroll', onScroll, { passive: true });
-    return () => track.removeEventListener('scroll', onScroll);
+    return () => {
+      track.removeEventListener('scroll', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      elements.forEach((element) => element.classList.add('is-visible'));
+      return;
+    }
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
@@ -37,21 +49,40 @@ export default function App() {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
+    }, { threshold: 0.08, rootMargin: '0px 0px -3% 0px' });
     elements.forEach((element) => observer.observe(element));
     return () => observer.disconnect();
   }, []);
 
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     const track = trackRef.current;
     if (!track) return;
     const next = Math.max(0, Math.min(slideNames.length - 1, index));
-    track.scrollTo({ left: next * track.clientWidth, behavior: 'smooth' });
-  };
+    track.scrollTo({ left: next * track.clientWidth, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+  }, []);
+
+  const goToSection = useCallback((id) => {
+    const track = trackRef.current;
+    const target = document.getElementById(id);
+    if (!track || !target) return;
+    const slide = target.closest('section, footer');
+    const index = Array.from(track.children).indexOf(slide);
+    if (index >= 0) goToSlide(index);
+  }, [goToSlide]);
+
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName)) return;
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); goToSlide(activeSlide + 1); }
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); goToSlide(activeSlide - 1); }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [activeSlide, goToSlide]);
 
   return (
     <div className="site-shell">
-      <Navigation />
+      <Navigation onNavigate={goToSection} />
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
         <Hero />
         <Story />
