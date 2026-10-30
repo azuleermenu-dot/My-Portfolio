@@ -5,7 +5,7 @@ export default function Work() {
   return (
     <section id="work" className="work section">
       <div className="section-label">
-        <span>03</span>
+        
         <span>SELECTED WORK</span>
         <span>PROJECTS / CONCEPTS</span>
       </div>
