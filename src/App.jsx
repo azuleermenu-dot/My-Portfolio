@@ -9,9 +9,8 @@ import Services from './components/Services';
 import Technology from './components/Technology';
 import Credentials from './components/Credentials';
 import Contact from './components/Contact';
-import Footer from './components/Footer';
 
-const slideNames = ['Home', 'Story', 'Work', 'Approach', 'Services', 'Technology', 'Credentials', 'Contact', 'Links'];
+const slideNames = ['Home', 'Story', 'Work', 'Approach', 'Services', 'Technology', 'Credentials', 'Contact'];
 
 export default function App() {
   const trackRef = useRef(null);
@@ -92,7 +91,6 @@ export default function App() {
         <Technology />
         <Credentials />
         <Contact />
-        <Footer />
       </main>
       <div className="slide-controls" aria-label="Slide navigation">
         <button type="button" onClick={() => goToSlide(activeSlide - 1)} disabled={activeSlide === 0} aria-label="Previous slide"><ArrowLeft size={16} /></button>
