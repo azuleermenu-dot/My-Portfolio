@@ -65,3 +65,78 @@ body { overflow: hidden; }
 @media(prefers-reduced-motion:reduce) {
   html,.slide-track { scroll-behavior:auto; }.slide-track { scroll-snap-type:none; }.asta-companion { animation:none; }
 }
+
+/* Responsive tuning: phones and tablets in portrait */
+@media (max-width: 800px) and (orientation: portrait) {
+  .slide-track > section,.slide-track > footer { min-height:100svh; }
+  .slide-track > section:not(.hero) { padding-top:88px; padding-bottom:76px; }
+  .slide-track > .hero { padding:92px 20px 76px; }
+  .hero__content .display { font-size:clamp(58px,16vw,112px); line-height:.9; }
+  .hero__meta { top:76px; right:20px; font-size:8px; }
+  .hero__bottom { align-items:flex-end; gap:18px; margin-top:30px; }
+  .hero__statement { max-width: min(72%,420px); font-size:clamp(15px,4vw,19px); }
+  .circle-link { width:54px; height:54px; flex:0 0 54px; }
+  .hero__edge { left:20px; bottom:18px; font-size:8px; }
+  .display { font-size:clamp(46px,11vw,82px); }
+  .story__intro,.work__intro,.services__head { padding:58px 0 64px; }
+  .chapter { min-height:0; padding:22px 0; }
+  .chapter p { font-size:13px; line-height:1.55; }
+  .project__visual-wrap { min-height:clamp(220px,52vw,390px); }
+  .projects { gap:58px; }
+  .approach { justify-content:flex-start; }
+  .approach__text { margin-top:32px; }
+  .service-row { min-height:0; padding:22px 0; }
+  .service-row h3 { font-size:clamp(22px,6vw,34px); }
+  .contact { gap:34px; }
+  .contact .display { font-size:clamp(42px,10vw,76px); overflow-wrap:anywhere; }
+  .inquiry { gap:20px; }
+  .form-field textarea { min-height:110px; }
+  .credentials__hero { margin-bottom:34px; }
+  .credentials__details { gap:26px; }
+}
+
+/* Landscape phones and compact tablet landscape: preserve usable vertical space */
+@media (orientation: landscape) and (max-height: 600px) {
+  .nav { top:8px; height:48px; width:min(920px,calc(100% - 28px)); padding:0 16px; gap:14px; }
+  .nav__brand { font-size:18px; }
+  .nav__links { gap:clamp(10px,1.7vw,20px); }
+  .nav__links a { font-size:9px; }
+  .slide-track > section:not(.hero) { padding-top:72px; padding-bottom:48px; }
+  .slide-track > .hero { padding-top:76px; padding-bottom:48px; }
+  .hero__content .display { font-size:clamp(54px,10vw,108px); }
+  .hero__meta { top:72px; font-size:8px; }
+  .hero__bottom { margin-top:22px; }
+  .hero__statement { font-size:clamp(14px,1.8vw,19px); }
+  .circle-link { width:48px; height:48px; }
+  .hero__edge { bottom:12px; }
+  .story__intro,.work__intro,.services__head { padding:42px 0 48px; }
+  .display { font-size:clamp(42px,7vw,78px); }
+  .project__visual-wrap { min-height:56vh; }
+  .projects { gap:52px; }
+  .approach { justify-content:flex-start; }
+  .approach__text { margin-top:28px; gap:28px; }
+  .credentials__hero { margin-bottom:34px; }
+  .credentials__details { margin-top:24px; gap:24px; }
+  .contact { gap:4vw; }
+  .inquiry { gap:14px; }
+  .slide-track > .footer { padding:7vw; }
+}
+
+/* Medium tablet widths: keep the desktop header from becoming cramped */
+@media (min-width: 801px) and (max-width: 1100px) {
+  .nav { width:calc(100% - 32px); gap:16px; padding:0 18px; }
+  .nav__links { gap:clamp(10px,1.5vw,17px); }
+  .nav__links a { font-size:9px; }
+  .slide-track > section:not(.hero) { padding-left:28px; padding-right:28px; }
+  .slide-track > .work,.slide-track > .technology,.slide-track > .contact,.slide-track > .approach { padding-left:28px; padding-right:28px; }
+  .tech__layout { gap:4vw; }
+  .project { gap:30px; }
+}
+
+@media (max-width: 380px) and (orientation: portrait) {
+  .nav { width:calc(100% - 16px); }
+  .hero__content .display { font-size:clamp(52px,15vw,68px); }
+  .hero__meta { display:none; }
+  .section-label { padding:10px 12px; font-size:8px; }
+  .contact .display { font-size:clamp(38px,10vw,48px); }
+}
