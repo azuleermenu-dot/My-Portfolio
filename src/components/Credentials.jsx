@@ -17,7 +17,7 @@ const skills = [
 export default function Credentials() {
   return (
     <section className="credentials section" id="credentials">
-      <div className="section-label"><span>07</span><span>TRAINING / CREDENTIALS</span><span>LEARNING & EXPERIENCE</span></div>
+      <div className="section-label"><span>TRAINING / CREDENTIALS</span><span>LEARNING & EXPERIENCE</span></div>
       <div className="credentials__hero reveal">
         <p className="eyebrow">LEARN · BUILD · GROW</p>
         <h2 className="display">TRAINED TO<br /><em>BUILD.</em></h2>
