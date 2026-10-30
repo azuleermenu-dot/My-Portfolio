@@ -40,7 +40,7 @@ export default function Technology() {
   return (
     <section className="technology section" id="technology">
       <div className="section-label">
-        <span>06</span>
+        
         <span>TECHNOLOGY</span>
         <span>TOOLS / CRAFT</span>
       </div>
