@@ -1,0 +1,51 @@
+/* Seasonal Halloween layer — preserves the portfolio's existing layout and glass styling. */
+:root {
+  --accent: #ff7a1a;
+  --line: rgba(255, 122, 26, .18);
+  --line-strong: rgba(255, 122, 26, .38);
+}
+body {
+  background:
+    radial-gradient(ellipse at 12% 12%, rgba(75, 27, 110, .18), transparent 38%),
+    var(--bg);
+}
+.nav--scrolled { background: rgba(12, 8, 17, .86); }
+.hero__orb--one { background: #ff7a1a; opacity: .13; }
+.hero__orb--two { background: #7b35b5; opacity: .12; }
+.project-visual--identity { background: radial-gradient(circle at 55% 45%, #6a3b20 0 2%, transparent 28%), #171117; }
+.project-visual--coffee { background: radial-gradient(circle at 50% 50%, #75421f 0 5%, #28151d 38%, #100d13 78%); }
+.visual-ring { border-color: rgba(255, 122, 26, .55); }
+.visual-bean { background: #d47732; }
+.visual-word { color: #ffb16a; }
+.approach { background: #21172b; color: #f4e9ff; }
+.approach .eyebrow { color: #ff9b48; }
+.work, .technology { background: #100d15; }
+.contact { background: #17101d; }
+.contact__glow { background: #ff7a1a16; }
+.submit { background: #ff7a1a; color: #170d1e; }
+.circle-link:hover { background: #ff7a1a; color: #170d1e; }
+.service-row:hover { background: #1c1224; }
+.project__number { background: #160e1ddd; border: 1px solid rgba(255,122,26,.3); }
+.text-link:hover, .footer__socials a:hover, .footer>a:hover { color: #ff9b48; }
+/* Decorative corner props */
+.site-shell::before, .site-shell::after {
+  position: fixed; z-index: 5; pointer-events: none; opacity: .78;
+  font-size: clamp(22px, 3vw, 38px); filter: drop-shadow(0 0 12px rgba(255,122,26,.22));
+}
+.site-shell::before { content: "🎃"; left: 18px; bottom: 18px; animation: halloween-bob 4s ease-in-out infinite; }
+.site-shell::after { content: "🦇"; right: 22px; top: 88px; animation: halloween-float 5s ease-in-out infinite; }
+.hero::after {
+  content: "✦  🕸️"; position: absolute; right: 7%; bottom: 14%;
+  color: #ff9b48; font-size: clamp(18px, 2vw, 26px); opacity: .45;
+  pointer-events: none; transform: rotate(-12deg);
+}
+@keyframes halloween-bob { 0%,100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-8px) rotate(5deg); } }
+@keyframes halloween-float { 0%,100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(9px) rotate(8deg); } }
+@media (max-width: 800px) {
+  .site-shell::before { left: 10px; bottom: 10px; font-size: 24px; }
+  .site-shell::after { right: 12px; top: 74px; font-size: 23px; }
+  .hero::after { right: 5%; bottom: 10%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-shell::before, .site-shell::after { animation: none; }
+}
