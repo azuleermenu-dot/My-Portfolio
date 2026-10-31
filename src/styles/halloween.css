@@ -49,3 +49,50 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .site-shell::before, .site-shell::after { animation: none; }
 }
+
+/* Lightweight motion polish: animate compositor-friendly properties only. */
+.reveal {
+  transition:
+    opacity .6s cubic-bezier(.22,1,.36,1),
+    transform .6s cubic-bezier(.22,1,.36,1);
+  transform: translate3d(0, 18px, 0);
+}
+.project__visual-wrap,
+.project-visual,
+.circle-link,
+.service-row,
+.text-link,
+.nav__links a,
+.nav__cta,
+.submit {
+  transition-timing-function: cubic-bezier(.22,1,.36,1);
+}
+.project-visual {
+  transform: translate3d(0,0,0) scale(1);
+  backface-visibility: hidden;
+}
+.project:hover .project-visual {
+  transform: translate3d(0,0,0) scale(1.035);
+}
+.nav__links a { position: relative; }
+.nav__links a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .28s cubic-bezier(.22,1,.36,1);
+}
+.nav__links a:hover::after,
+.nav__links a:focus-visible::after { transform: scaleX(1); }
+.circle-link:hover,
+.submit:hover,
+.service-row:hover {
+  transform: translate3d(0,-2px,0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .project-visual, .nav__links a::after,
+  .circle-link, .submit, .service-row { transition: none !important; transform: none !important; }
+}
