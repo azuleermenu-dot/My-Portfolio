@@ -140,3 +140,50 @@ body { overflow: hidden; }
   .section-label { padding:10px 12px; font-size:8px; }
   .contact .display { font-size:clamp(38px,10vw,48px); }
 }
+
+/* iOS Safari scrolling fixes */
+html, body, #root, .site-shell {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+}
+.site-shell {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+}
+.slide-track {
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+}
+.slide-track > section,
+.slide-track > footer {
+  flex-basis: 100%;
+  width: 100%;
+  min-width: 100%;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  scroll-snap-align: start;
+}
+@supports (-webkit-touch-callout: none) {
+  .slide-track {
+    scroll-snap-type: x mandatory;
+    scroll-behavior: auto;
+  }
+  .slide-track > section,
+  .slide-track > footer {
+    scroll-snap-stop: normal;
+  }
+}
