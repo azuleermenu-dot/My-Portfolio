@@ -16,13 +16,12 @@ const slideIds = ['top', 'story', 'work', 'approach', 'services', 'technology', 
 export default function App() {
   const trackRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
-  const slideAnimationRef = useRef(null);
 
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
     let frame = 0;
-    const onScroll = () => {
+    const updateActiveSlide = () => {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
         const width = track.clientWidth || window.innerWidth;
@@ -30,9 +29,11 @@ export default function App() {
         frame = 0;
       });
     };
-    track.addEventListener('scroll', onScroll, { passive: true });
+    track.addEventListener('scroll', updateActiveSlide, { passive: true });
+    window.addEventListener('resize', updateActiveSlide, { passive: true });
     return () => {
-      track.removeEventListener('scroll', onScroll);
+      track.removeEventListener('scroll', updateActiveSlide);
+      window.removeEventListener('resize', updateActiveSlide);
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
@@ -64,32 +65,16 @@ export default function App() {
     const track = trackRef.current;
     if (!track) return;
     const next = Math.max(0, Math.min(slideIds.length - 1, index));
-    slideAnimationRef.current?.stop();
-    const target = next * track.clientWidth;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      track.style.scrollSnapType = '';
-      track.scrollLeft = target;
-      return;
-    }
+    const slide = track.children[next];
+    if (!slide) return;
 
-    // Animate a numeric Motion value and write it to the real scroll container.
-    // Animating the DOM "scrollLeft" property directly is not reliable across browsers.
-    track.style.scrollSnapType = 'none';
-    const controls = animate(track.scrollLeft, target, {
-      duration: 0.85,
-      ease: [0.22, 1, 0.36, 1],
-      onUpdate: (value) => {
-        track.scrollLeft = value;
-      },
+    // Use native scrolling rather than JS-driven scrollLeft animation.
+    // Safari on iOS can interrupt scripted scroll updates during touch gestures.
+    track.scrollTo({
+      left: slide.offsetLeft,
+      top: 0,
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
     });
-    slideAnimationRef.current = controls;
-    controls.finished.then(() => {
-      if (slideAnimationRef.current === controls) {
-        track.scrollLeft = target;
-        track.style.scrollSnapType = '';
-        slideAnimationRef.current = null;
-      }
-    }).catch(() => {});
   }, []);
 
   const goToSection = useCallback((id) => {
@@ -114,7 +99,6 @@ export default function App() {
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
         <Hero /><Story /><Work /><Approach /><Services /><Technology /><Credentials /><Contact />
       </main>
-
     </div>
   );
 }
