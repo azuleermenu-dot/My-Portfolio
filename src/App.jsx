@@ -61,7 +61,8 @@ function ProjectCard({ project, index }) {
 
 export default function App() {
   const rootRef = useRef(null);
-  const projectsTrackRef = useRef(null);\n  const lenisRef = useRef(null);
+  const projectsTrackRef = useRef(null);
+  const lenisRef = useRef(null);
 
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
