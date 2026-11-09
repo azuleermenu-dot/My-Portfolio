@@ -1,90 +1,58 @@
-<div align="center">
+# Asnor Ali — Personal Developer Portfolio
 
-# ASNOR ALI
+A full portfolio rebuild inspired by the supplied futuristic, cinematic galaxy reference.
 
-### INDEPENDENT · FREELANCE WEB DEVELOPER
+## Stack
 
-**Thoughtful websites and digital experiences for businesses, brands, and people.**
+- React 18 + Vite
+- GSAP + ScrollTrigger for parallax, scroll reveals, pinned project storytelling, and SVG path drawing
+- Lenis for desktop smooth scrolling (disabled when reduced motion is requested)
+- Lucide React for interface icons
+- Vercel serverless function + Resend for contact email delivery
 
-[![Live Portfolio](https://img.shields.io/badge/VIEW%20PORTFOLIO-%E2%86%97-111111?style=for-the-badge&labelColor=f2eee7&color=111111)](https://asnorali.vercel.app/)
-[![GitHub](https://img.shields.io/badge/GITHUB-AZN-111111?style=for-the-badge&logo=github&logoColor=white)](https://github.com/azuleermenu-dot)
+The existing Vite/React application was retained to avoid an unnecessary framework migration.
 
-</div>
-
----
-
-## 01 — ABOUT
-
-I'm **Asnor Ali**, an independent freelance web developer based in the Philippines.
-
-I work directly with clients to understand their goals and create responsive websites and practical digital experiences. My approach combines thoughtful visual design, clear communication, and maintainable implementation.
-
-I take a hands-on approach to every project: **understand → plan → design → build → refine.**
-
-## 02 — FREELANCE SERVICES
-
-| SERVICE | DESCRIPTION |
-|---|---|
-| **Business Websites** | Professional websites that introduce a business, explain its services, and make it easy for customers to get in touch. |
-| **Landing Pages** | Focused pages for products, promotions, campaigns, and specific business goals. |
-| **Web Applications** | Interactive interfaces and practical digital tools. |
-| **Personal Portfolios** | Distinctive websites that present an individual's work, skills, and identity. |
-
-Project scope, timeline, and pricing are discussed based on each client's requirements.
-
-## 03 — SELECTED WORK
-
-| # | PROJECT | DESCRIPTION |
-|---|---|---|
-| 01 | **WICKED COFFEE** | Cinematic website concept focused on atmosphere, branding, and visual storytelling. |
-| 02 | **KDYNN MARKET** | Web project exploring a clean, usable digital storefront experience. |
-| 03 | **MUNI** | Student study-planner and review platform currently in development. |
-| 04 | **LOCAL TRANSPORT APP** | Transport application concept exploring maps, location, and route information. |
-
-Some entries are concepts or works in progress and are presented as portfolio projects.
-
-## 04 — TECHNOLOGY
-
-React · Vite · JavaScript · TypeScript · Next.js · HTML · CSS · Python · Java · Supabase · PostgreSQL · MongoDB · Git · GitHub · Vercel
-
-## 05 — APPROACH
-
-> **GOOD WORK IS FELT BEFORE IT'S EXPLAINED.**
-
-- Understanding the client's goals
-- Clear structure and visual hierarchy
-- Responsive experiences across devices
-- Motion and interaction with a purpose
-- Maintainable, evolving code
-
-## 06 — DEVELOPMENT
-
-This portfolio is built with **React + Vite** and a component-based architecture.
+## Run locally
 
 ```bash
 npm install
 npm run dev
 npm run build
+npm run preview
 ```
 
-## 07 — CONTACT
+## Contact email configuration
 
-Have a website or digital project in mind?
+The form posts to `/api/contact` and delivers messages to `asnorali.dev@gmail.com`.
 
-**Let's discuss what you want to build.**
+Configure these Vercel environment variables before email delivery can work:
 
-- **Email:** asnorali.dev@gmail.com
-- **Portfolio:** https://asnorali.vercel.app/
-- **GitHub:** https://github.com/azuleermenu-dot
-- **LinkedIn:** https://www.linkedin.com/in/asnor-ali-006b50446
+- `RESEND_API_KEY`: a Resend API key.
+- `RESEND_FROM_EMAIL`: a sender address on a domain verified in Resend.
 
----
+For shared rate limiting across Vercel instances, also configure:
 
-<div align="center">
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
 
-**ASNOR ALI.**  
-INDEPENDENT FREELANCE WEB DEVELOPER
+Without Upstash, a per-instance in-memory fallback is used. Never expose these values in frontend code. See `.env.example`.
 
-© 2026 Asnor Ali. All rights reserved.
+## Work shown
 
-</div>
+- KDYNN Market — website project
+- Wicked Coffee — concept project
+- Ember & Salt — fictional restaurant branding and website concept
+
+Unverified project URLs and unpublished technology stacks are intentionally omitted rather than guessed. The project artwork in the portfolio is a visual representation, not a captured screenshot of each live website.
+
+## Accessibility and performance
+
+- Responsive desktop, tablet, and mobile layouts
+- Reduced-motion support
+- Semantic page sections, keyboard focus styles, and labelled form inputs
+- Lazy-loaded secondary images and technology icons
+- No autoplay audio
+
+## Preview and release
+
+This rebuild is developed on the `rebuild/scroll-driven-portfolio` branch. The production branch and live domain are not changed by the preview workflow. Review the Vercel preview before merging or promoting a release.
