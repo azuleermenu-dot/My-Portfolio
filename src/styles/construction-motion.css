@@ -1,0 +1,194 @@
+/* Scroll-driven construction effects for the portfolio */
+.hero h1 {
+  perspective: 1000px;
+}
+
+.hero__title-char {
+  display: inline-block;
+  white-space: pre;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+}
+
+.about__grid {
+  position: relative;
+}
+
+.about__construction-line {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  opacity: .72;
+  pointer-events: none;
+  transform: scaleY(0);
+  transform-origin: top;
+  background: linear-gradient(to bottom, transparent, rgba(106, 190, 255, .48) 18%, rgba(106, 190, 255, .2) 82%, transparent);
+}
+
+.about__title,
+.about__copy {
+  position: relative;
+  z-index: 1;
+}
+
+.process-list--timeline {
+  --timeline-progress: 0;
+  position: relative;
+  padding-left: 0;
+}
+
+.process-list--timeline::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 48px;
+  bottom: 29px;
+  left: 68px;
+  width: 1px;
+  opacity: .8;
+  background: linear-gradient(to bottom, rgba(102, 190, 255, .08), rgba(102, 190, 255, .75));
+  transform: scaleY(var(--timeline-progress));
+  transform-origin: top;
+  pointer-events: none;
+}
+
+.process-step {
+  position: relative;
+  z-index: 1;
+  min-height: 62px;
+  transform-origin: left center;
+}
+
+.process-step > i {
+  transition: border-color .35s ease, background .35s ease, box-shadow .35s ease, color .35s ease;
+}
+
+.process-step.is-complete > i {
+  color: #b8eaff;
+  border-color: rgba(111, 207, 255, .62);
+  background: linear-gradient(145deg, rgba(76, 164, 235, .28), rgba(35, 92, 151, .16));
+  box-shadow: 0 0 24px rgba(72, 167, 245, .14), inset 0 0 12px rgba(120, 207, 255, .08);
+}
+
+.process-step.is-complete > small {
+  color: #9bdcff;
+}
+
+.technology-card {
+  isolation: isolate;
+  perspective: 900px;
+}
+
+.technology-card::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  bottom: 0;
+  left: -115%;
+  width: 75%;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent, rgba(130, 216, 255, .19), transparent);
+  transform: skewX(-18deg);
+}
+
+.technology-card.is-installing::before {
+  opacity: 1;
+  animation: technology-install-scan .85s ease both;
+}
+
+.technology-card.is-installed {
+  border-color: rgba(105, 190, 255, .28);
+}
+
+.technology-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes technology-install-scan {
+  from { left: -115%; }
+  to { left: 145%; }
+}
+
+.project-card {
+  transform-style: preserve-3d;
+  will-change: transform, opacity, clip-path;
+}
+
+.project-visual {
+  isolation: isolate;
+}
+
+.project-visual__art {
+  isolation: isolate;
+}
+
+.project-visual__art::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-105%);
+  background: linear-gradient(105deg, transparent 38%, rgba(221, 242, 255, .1) 50%, transparent 62%);
+}
+
+.project-card.is-assembling .project-visual__art::after {
+  opacity: 1;
+  animation: project-build-scan 1.1s cubic-bezier(.22, .75, .25, 1) both;
+}
+
+@keyframes project-build-scan {
+  from { transform: translateX(-105%); }
+  to { transform: translateX(105%); }
+}
+
+.project-info > * {
+  will-change: transform, opacity;
+}
+
+.contact__copy h2,
+.contact-form label,
+.contact-form > button {
+  transform-origin: left center;
+}
+
+@media (max-width: 760px) {
+  .about__construction-line {
+    display: none;
+  }
+
+  .process-list--timeline::before {
+    left: 50px;
+  }
+
+  .process-step {
+    min-height: 58px;
+  }
+
+  .project-card {
+    will-change: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__title-char,
+  .project-card,
+  .technology-card,
+  .process-step {
+    will-change: auto;
+    transform: none !important;
+  }
+
+  .technology-card::before,
+  .project-visual__art::after {
+    animation: none !important;
+    display: none;
+  }
+}
