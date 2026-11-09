@@ -100,6 +100,30 @@ function useScrollMotion(enabled) {
         });
       });
 
+      gsap.utils.toArray('.section-heading').forEach((element) => {
+        gsap.fromTo(element, { autoAlpha: 0, x: -28 }, {
+          autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out',
+          scrollTrigger: { trigger: element, start: 'top 91%', once: true },
+        });
+      });
+
+      ['.process-step', '.technology-card', '.project-card'].forEach((selector) => {
+        gsap.utils.toArray(selector).forEach((element, index) => {
+          gsap.fromTo(element, { autoAlpha: 0, y: 38, scale: 0.985 }, {
+            autoAlpha: 1, y: 0, scale: 1, duration: 0.75,
+            delay: (index % 4) * 0.07, ease: 'power3.out',
+            scrollTrigger: { trigger: element, start: 'top 92%', once: true },
+          });
+        });
+      });
+
+      gsap.utils.toArray('.glass-card, .contact-form').forEach((element) => {
+        gsap.fromTo(element, { autoAlpha: 0, y: 48, rotateX: 2 }, {
+          autoAlpha: 1, y: 0, rotateX: 0, duration: 0.95, ease: 'power3.out',
+          scrollTrigger: { trigger: element, start: 'top 88%', once: true },
+        });
+      });
+
       gsap.utils.toArray('[data-image-reveal]').forEach((element) => {
         gsap.fromTo(element, { clipPath: 'inset(0 0 100% 0)' }, {
           clipPath: 'inset(0 0 0 0)', duration: 1.1, ease: 'power3.inOut',
@@ -241,7 +265,6 @@ function About() {
     <div className="section-heading"><span>01 / ABOUT ME</span><span>A LITTLE ABOUT THE PERSON BEHIND THE SCREEN</span></div>
     <div className="about__grid">
       <div className="about__title" data-reveal><p className="eyebrow">GET TO KNOW ME</p><h2>Hi, I'm<br/><span>Asnor Ali.</span></h2></div>
-      <figure className="about__portrait" data-image-reveal><img src="/asnor-ali.webp" alt="Asnor Ali" width="480" height="480" loading="lazy"/><figcaption>ASNOR ALI · FREELANCE WEB DEVELOPER</figcaption></figure>
       <div className="about__copy" data-reveal>
         <p className="eyebrow">ABOUT / 001</p>
         <p className="about__lead">I'm a freelance web developer passionate about creating modern, interactive, and visually engaging digital experiences.</p>
