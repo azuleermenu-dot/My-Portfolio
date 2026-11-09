@@ -783,5 +783,5 @@ export default function App() {
     ['home','about','portfolio','contact'].forEach(id=>{const el=document.getElementById(id);if(el)observer.observe(el);});
     return()=>observer.disconnect();
   },[activeProject]);
-  return <><div className="construction-status" aria-hidden="true"><span>LIVE BUILD</span><strong>{activeSection.toUpperCase()}</strong><i><b className="construction-status__progress" /></i></div><div className="site-shell"><Galaxy/><main>{activeProject?<ProjectDetail project={activeProject} onBack={closeProject}/>:<><Nav active={activeSection} onNavigate={navigateTo}/><Hero/><About/><Workspace/><Portfolio onOpen={openProject}/><Technology/><Contact/><Footer/></>}</main></div></>;
+  return <><div className="site-shell"><Galaxy/><main>{activeProject?<ProjectDetail project={activeProject} onBack={closeProject}/>:<><Nav active={activeSection} onNavigate={navigateTo}/><Hero/><About/><Workspace/><Portfolio onOpen={openProject}/><Technology/><Contact/><Footer/></>}</main></div></>;
 }
