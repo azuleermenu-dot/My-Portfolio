@@ -66,11 +66,13 @@ export default function App() {
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let lenis;
+    let ticker;
     if (!reduceMotion) {
       lenis = new Lenis({ duration: 1.05, smoothWheel: true, touchMultiplier: 1.15 });
+      lenisRef.current = lenis;
       lenis.on('scroll', ScrollTrigger.update);
-      const tick = (time) => lenis.raf(time * 1000);
-      gsap.ticker.add(tick);
+      ticker = (time) => lenis.raf(time * 1000);
+      gsap.ticker.add(ticker);
       gsap.ticker.lagSmoothing(0);
     }
 
@@ -121,8 +123,9 @@ export default function App() {
       window.clearTimeout(refreshTimer);
       ctx.revert();
       if (lenis) {
-        gsap.ticker.remove((time) => lenis.raf(time * 1000));
+        gsap.ticker.remove(ticker);
         lenis.destroy();
+        lenisRef.current = null;
       }
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
@@ -131,9 +134,8 @@ export default function App() {
   const scrollTo = (id) => {
     const target = document.getElementById(id);
     if (!target) return;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) target.scrollIntoView();
-    else window.lenis?.scrollTo?.(target);
-    target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+    if (lenisRef.current) lenisRef.current.scrollTo(target);
+    else target.scrollIntoView({ behavior: 'auto' });
   };
 
   return (
