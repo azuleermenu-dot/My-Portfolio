@@ -233,6 +233,41 @@ function useScrollMotion(enabled) {
         });
       }
 
+      // Stronger construction language: visible section sweeps and scroll assembly.
+      const buildSections = gsap.utils.toArray('main > section[id]');
+      buildSections.forEach((section) => {
+        if (!section.querySelector('.construction-sweep')) {
+          const sweep = document.createElement('span');
+          sweep.className = 'construction-sweep';
+          sweep.setAttribute('aria-hidden', 'true');
+          section.prepend(sweep);
+        }
+        const sweep = section.querySelector('.construction-sweep');
+        gsap.fromTo(sweep, { scaleX: 0, transformOrigin: 'left center' }, {
+          scaleX: 1, ease: 'none',
+          scrollTrigger: { trigger: section, start: 'top 82%', end: 'top 22%', scrub: 0.65 },
+        });
+        const targets = Array.from(section.children).filter((child) => (
+          !child.classList.contains('construction-sweep') && !child.classList.contains('section-heading')
+        ));
+        targets.forEach((target, index) => {
+          gsap.fromTo(target, { autoAlpha: 0.2, y: 68, rotateX: 3, transformOrigin: '50% 100%' }, {
+            autoAlpha: 1, y: 0, rotateX: 0, ease: 'none',
+            scrollTrigger: {
+              trigger: section,
+              start: () => 'top+=' + Math.min(index * 55, 165) + ' 90%',
+              end: () => 'top+=' + Math.min(index * 55, 165) + ' 35%',
+              scrub: 0.8, invalidateOnRefresh: true,
+            },
+          });
+        });
+      });
+      const pageProgress = document.querySelector('.construction-status__progress');
+      if (pageProgress) gsap.to(pageProgress, {
+        scaleX: 1, transformOrigin: 'left center', ease: 'none',
+        scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.25 },
+      });
+
       gsap.utils.toArray('.section-heading').forEach((element) => {
         gsap.fromTo(element, { autoAlpha: 0, x: -24 }, {
           autoAlpha: 1,
@@ -748,5 +783,5 @@ export default function App() {
     ['home','about','portfolio','contact'].forEach(id=>{const el=document.getElementById(id);if(el)observer.observe(el);});
     return()=>observer.disconnect();
   },[activeProject]);
-  return <div className="site-shell"><Galaxy/><main>{activeProject?<ProjectDetail project={activeProject} onBack={closeProject}/>:<><Nav active={activeSection} onNavigate={navigateTo}/><Hero/><About/><Workspace/><Portfolio onOpen={openProject}/><Technology/><Contact/><Footer/></>}</main></div>;
+  return <><div className="construction-status" aria-hidden="true"><span>LIVE BUILD</span><strong>{activeSection.toUpperCase()}</strong><i><b className="construction-status__progress" /></i></div><div className="site-shell"><Galaxy/><main>{activeProject?<ProjectDetail project={activeProject} onBack={closeProject}/>:<><Nav active={activeSection} onNavigate={navigateTo}/><Hero/><About/><Workspace/><Portfolio onOpen={openProject}/><Technology/><Contact/><Footer/></>}</main></div></>;
 }
