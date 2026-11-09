@@ -2,11 +2,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   ArrowDownRight, ArrowLeft, ArrowUpRight, AudioLines, Code2, Compass,
   Database, DraftingCompass, ExternalLink, Github, Headphones, Linkedin,
-  Mail, MoveUpRight, Play, Send, Sparkles,
+  Mail, MoveUpRight, Play, Rocket, Send, Sparkles, TestTube2,
 } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import './styles/construction-motion.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,12 +67,18 @@ const exploring = [
 function useScrollMotion(enabled) {
   useEffect(() => {
     if (!enabled) return undefined;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     let lenis;
     let ticker;
 
-    if (!reduced) {
-      lenis = new Lenis({ duration: 1.05, smoothWheel: true, touchMultiplier: 1.05, wheelMultiplier: 0.9 });
+    if (!reducedMotion) {
+      lenis = new Lenis({
+        duration: 1.05,
+        smoothWheel: true,
+        touchMultiplier: 1.05,
+        wheelMultiplier: 0.9,
+      });
       lenis.on('scroll', ScrollTrigger.update);
       ticker = (time) => lenis.raf(time * 1000);
       gsap.ticker.add(ticker);
@@ -79,87 +86,417 @@ function useScrollMotion(enabled) {
     }
 
     const context = gsap.context(() => {
-      if (reduced) {
-        gsap.set('[data-reveal]', { autoAlpha: 1, y: 0 });
-        gsap.set('[data-image-reveal]', { clipPath: 'inset(0 0 0 0)' });
+      if (reducedMotion) {
+        gsap.set('[data-reveal], .section-heading, .process-step, .technology-card, .project-card', {
+          autoAlpha: 1,
+          clearProps: 'transform,clipPath',
+        });
         return;
       }
 
-      gsap.utils.toArray('[data-reveal]').forEach((element) => {
-        gsap.fromTo(element, { autoAlpha: 0, y: 34 }, {
-          autoAlpha: 1, y: 0, duration: 0.85, ease: 'power3.out',
-          scrollTrigger: { trigger: element, start: 'top 87%', once: true },
+      // Split the hero heading into accessible, individually animated characters.
+      const heroTitle = document.querySelector('.hero h1');
+      if (heroTitle && !heroTitle.dataset.charactersSplit) {
+        heroTitle.dataset.charactersSplit = 'true';
+        heroTitle.setAttribute('aria-label', 'Welcome to My Portfolio.');
+
+        const walker = document.createTreeWalker(heroTitle, NodeFilter.SHOW_TEXT);
+        const textNodes = [];
+        while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+        textNodes.forEach((textNode) => {
+          const fragment = document.createDocumentFragment();
+          Array.from(textNode.textContent).forEach((character) => {
+            const span = document.createElement('span');
+            span.className = 'hero__title-char';
+            span.setAttribute('aria-hidden', 'true');
+            span.textContent = character === ' ' ? '\u00a0' : character;
+            fragment.appendChild(span);
+          });
+          textNode.replaceWith(fragment);
+        });
+      }
+
+      // General section reveals. Hero, About copy, toolkit groups, and Contact
+      // have dedicated timelines below to avoid competing tweens.
+      gsap.utils.toArray('[data-reveal]')
+        .filter((element) => (
+          !element.closest('#home')
+          && !element.classList.contains('about__copy')
+          && !element.classList.contains('contact__copy')
+          && !element.classList.contains('contact-form')
+          && !element.classList.contains('technology-group')
+        ))
+        .forEach((element) => {
+          gsap.fromTo(element, { autoAlpha: 0, y: 32 }, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.78,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: element,
+              start: 'top 88%',
+              toggleActions: 'play none none reverse',
+            },
+          });
+        });
+
+      // The opening sequence assembles the navigation, typography, actions,
+      // and profile card in layers instead of using one generic fade.
+      const hero = document.querySelector('#home');
+      if (hero) {
+        const heroTimeline = gsap.timeline({
+          defaults: { ease: 'power3.out' },
+          scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        heroTimeline
+          .fromTo('.nav-glass', { autoAlpha: 0, y: -26 }, { autoAlpha: 1, y: 0, duration: 0.72 }, 0)
+          .fromTo('.hero__meta', { autoAlpha: 0, y: -14 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.12)
+          .fromTo('.hero__copy > .eyebrow', { autoAlpha: 0, x: -20 }, { autoAlpha: 1, x: 0, duration: 0.58 }, 0.24)
+          .fromTo('.hero__title-char', {
+            autoAlpha: 0,
+            yPercent: 115,
+            rotateX: -65,
+          }, {
+            autoAlpha: 1,
+            yPercent: 0,
+            rotateX: 0,
+            duration: 0.68,
+            stagger: 0.022,
+            ease: 'back.out(1.12)',
+          }, 0.34)
+          .fromTo('.hero__role', { autoAlpha: 0, y: 22 }, { autoAlpha: 1, y: 0, duration: 0.55 }, 0.8)
+          .fromTo('.hero__description', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 0.58 }, 0.92)
+          .fromTo('.hero__actions > *', { autoAlpha: 0, y: 18, scale: 0.97 }, {
+            autoAlpha: 1, y: 0, scale: 1, duration: 0.52, stagger: 0.1,
+          }, 1.04)
+          .fromTo('.hero__socials a', { autoAlpha: 0, y: 12 }, {
+            autoAlpha: 1, y: 0, duration: 0.38, stagger: 0.08,
+          }, 1.2)
+          .fromTo('.id-card', {
+            autoAlpha: 0,
+            y: 48,
+            rotateY: -10,
+            rotateX: 5,
+            scale: 0.94,
+            clipPath: 'inset(0 0 100% 0)',
+          }, {
+            autoAlpha: 1,
+            y: 0,
+            rotateY: 0,
+            rotateX: 0,
+            scale: 1,
+            clipPath: 'inset(0 0 0 0)',
+            duration: 1.05,
+            ease: 'power3.inOut',
+          }, 0.28)
+          .fromTo('.hero__orbit', { autoAlpha: 0, scale: 0.78, rotate: -12 }, {
+            autoAlpha: 1, scale: 1, rotate: 0, duration: 1, stagger: 0.12,
+          }, 0.38)
+          .fromTo('.hero__visual-label', { autoAlpha: 0, x: 15 }, {
+            autoAlpha: 1, x: 0, duration: 0.52,
+          }, 0.9);
+      }
+
+      // About copy is revealed in separate editorial blocks, while the
+      // vertical construction rule tracks the visitor's scroll progress.
+      const aboutGrid = document.querySelector('.about__grid');
+      if (aboutGrid) {
+        gsap.fromTo('.about__copy > p:not(.eyebrow), .about__copy > button', {
+          autoAlpha: 0,
+          y: 24,
+          clipPath: 'inset(0 0 18% 0)',
+        }, {
+          autoAlpha: 1,
+          y: 0,
+          clipPath: 'inset(0 0 0 0)',
+          duration: 0.72,
+          stagger: 0.14,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: aboutGrid,
+            start: 'top 78%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        gsap.to('.about__construction-line', {
+          scaleY: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: aboutGrid,
+            start: 'top 72%',
+            end: 'bottom 55%',
+            scrub: 1,
+          },
+        });
+      }
+
+      gsap.utils.toArray('.section-heading').forEach((element) => {
+        gsap.fromTo(element, { autoAlpha: 0, x: -24 }, {
+          autoAlpha: 1,
+          x: 0,
+          duration: 0.72,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: element,
+            start: 'top 91%',
+            toggleActions: 'play none none reverse',
+          },
         });
       });
 
       gsap.utils.toArray('[data-parallax]').forEach((element) => {
         const speed = Number(element.dataset.parallax) || 0.1;
         gsap.to(element, {
-          yPercent: speed * -55, ease: 'none',
-          scrollTrigger: { trigger: element.closest('section') || element, start: 'top bottom', end: 'bottom top', scrub: true },
+          yPercent: speed * -55,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: element.closest('section') || element,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
         });
       });
 
-      gsap.utils.toArray('.section-heading').forEach((element) => {
-        gsap.fromTo(element, { autoAlpha: 0, x: -28 }, {
-          autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out',
-          scrollTrigger: { trigger: element, start: 'top 91%', once: true },
+      // The process line fills as the five stages are reached. Each node
+      // lights up when its own section of the sequence enters the viewport.
+      const processList = document.querySelector('.process-list--timeline');
+      if (processList) {
+        const steps = gsap.utils.toArray('.process-step', processList);
+        gsap.to(processList, {
+          '--timeline-progress': 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: processList,
+            start: 'top 78%',
+            end: 'bottom 50%',
+            scrub: 1,
+          },
         });
-      });
 
-      ['.process-step', '.technology-card', '.project-card'].forEach((selector) => {
-        gsap.utils.toArray(selector).forEach((element, index) => {
-          gsap.fromTo(element, { autoAlpha: 0, y: 38, scale: 0.985 }, {
-            autoAlpha: 1, y: 0, scale: 1, duration: 0.75,
-            delay: (index % 4) * 0.07, ease: 'power3.out',
-            scrollTrigger: { trigger: element, start: 'top 92%', once: true },
+        steps.forEach((step) => {
+          const stepTimeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: step,
+              start: 'top 82%',
+              toggleActions: 'play none none reverse',
+            },
           });
-        });
-      });
 
-      gsap.utils.toArray('.glass-card, .contact-form').forEach((element) => {
-        gsap.fromTo(element, { autoAlpha: 0, y: 48, rotateX: 2 }, {
-          autoAlpha: 1, y: 0, rotateX: 0, duration: 0.95, ease: 'power3.out',
-          scrollTrigger: { trigger: element, start: 'top 88%', once: true },
-        });
-      });
-
-      gsap.utils.toArray('[data-image-reveal]').forEach((element) => {
-        gsap.fromTo(element, { clipPath: 'inset(0 0 100% 0)' }, {
-          clipPath: 'inset(0 0 0 0)', duration: 1.1, ease: 'power3.inOut',
-          scrollTrigger: { trigger: element, start: 'top 83%', once: true },
-        });
-      });
-
-      const path = document.querySelector('.story-path');
-      if (path) {
-        const length = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: length, strokeDashoffset: length });
-        gsap.to(path, {
-          strokeDashoffset: 0, ease: 'none',
-          scrollTrigger: { trigger: '#workspace', start: 'top 68%', end: 'bottom 48%', scrub: 1 },
+          stepTimeline
+            .fromTo(step, { autoAlpha: 0, x: -18, y: 14 }, {
+              autoAlpha: 1,
+              x: 0,
+              y: 0,
+              duration: 0.55,
+              ease: 'power3.out',
+              onComplete: () => step.classList.add('is-complete'),
+              onReverseComplete: () => step.classList.remove('is-complete'),
+            })
+            .fromTo(step.querySelector('i'), { scale: 0.78, rotate: -12 }, {
+              scale: 1,
+              rotate: 0,
+              duration: 0.48,
+              ease: 'back.out(1.6)',
+            }, 0.08);
         });
       }
 
-      const track = document.querySelector('.projects-track');
-      const portfolio = document.querySelector('#portfolio');
-      if (track && portfolio && window.matchMedia('(min-width: 1100px)').matches) {
-        const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 110);
-        gsap.to(track, {
-          x: () => -distance(), ease: 'none',
+      const storyPath = document.querySelector('.story-path');
+      if (storyPath) {
+        const pathLength = storyPath.getTotalLength();
+        gsap.set(storyPath, {
+          strokeDasharray: pathLength,
+          strokeDashoffset: pathLength,
+        });
+        gsap.to(storyPath, {
+          strokeDashoffset: 0,
+          ease: 'none',
           scrollTrigger: {
-            trigger: portfolio, start: 'top top', end: () => '+=' + (distance() + window.innerHeight * 0.25),
-            pin: true, scrub: 1, invalidateOnRefresh: true,
+            trigger: '#workspace',
+            start: 'top 68%',
+            end: 'bottom 48%',
+            scrub: 1,
           },
         });
       }
+
+      // Technology cards enter like individual tools being installed.
+      gsap.utils.toArray('.technology-group').forEach((group) => {
+        const cards = gsap.utils.toArray('.technology-card', group);
+        if (!cards.length) return;
+
+        gsap.fromTo(cards, {
+          autoAlpha: 0,
+          y: 30,
+          rotateX: 8,
+          clipPath: 'inset(0 0 100% 0)',
+        }, {
+          autoAlpha: 1,
+          y: 0,
+          rotateX: 0,
+          clipPath: 'inset(0 0 0 0)',
+          duration: 0.68,
+          stagger: 0.075,
+          ease: 'power3.out',
+          onStart: () => cards.forEach((card) => card.classList.add('is-installing')),
+          onComplete: () => cards.forEach((card) => {
+            card.classList.remove('is-installing');
+            card.classList.add('is-installed');
+          }),
+          onReverseComplete: () => cards.forEach((card) => {
+            card.classList.remove('is-installing', 'is-installed');
+          }),
+          scrollTrigger: {
+            trigger: group,
+            start: 'top 82%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+      });
+
+      // Project previews are masked into view and their information is
+      // assembled in sequence as the selected-work section arrives.
+      const portfolio = document.querySelector('#portfolio');
+      const projectCards = gsap.utils.toArray('.project-card');
+      if (portfolio && projectCards.length) {
+        const projectTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: portfolio,
+            start: 'top 70%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        projectCards.forEach((card, index) => {
+          const at = index * 0.24;
+          card.classList.add('is-assembling');
+
+          projectTimeline
+            .fromTo(card, {
+              autoAlpha: 0,
+              y: 44,
+              scale: 0.985,
+              clipPath: 'inset(0 0 13% 0)',
+            }, {
+              autoAlpha: 1,
+              y: 0,
+              scale: 1,
+              clipPath: 'inset(0 0 0 0)',
+              duration: 0.78,
+              ease: 'power3.out',
+            }, at)
+            .fromTo(card.querySelector('.project-visual'), {
+              clipPath: 'inset(0 0 100% 0)',
+            }, {
+              clipPath: 'inset(0 0 0 0)',
+              duration: 0.82,
+              ease: 'power3.inOut',
+            }, at + 0.08)
+            .fromTo(card.querySelectorAll('.project-info > *'), {
+              autoAlpha: 0,
+              y: 16,
+            }, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.48,
+              stagger: 0.07,
+              ease: 'power3.out',
+            }, at + 0.2)
+            .fromTo(card.querySelector('.project-visual__art > strong'), {
+              autoAlpha: 0,
+              y: 25,
+              rotateX: -12,
+            }, {
+              autoAlpha: 1,
+              y: 0,
+              rotateX: 0,
+              duration: 0.62,
+              ease: 'power3.out',
+            }, at + 0.25);
+        });
+
+        projectTimeline.eventCallback('onComplete', () => {
+          projectCards.forEach((card) => card.classList.remove('is-assembling'));
+        });
+        projectTimeline.eventCallback('onReverseComplete', () => {
+          projectCards.forEach((card) => card.classList.add('is-assembling'));
+        });
+
+        const track = document.querySelector('.projects-track');
+        if (track && window.matchMedia('(min-width: 1100px)').matches) {
+          const distance = () => Math.max(0, track.scrollWidth - window.innerWidth + 110);
+          gsap.to(track, {
+            x: () => -distance(),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: portfolio,
+              start: 'top top',
+              end: () => '+=' + (distance() + window.innerHeight * 0.25),
+              pin: true,
+              scrub: 1,
+              invalidateOnRefresh: true,
+            },
+          });
+        }
+      }
+
+      // The final contact area assembles from its headline through the form.
+      const contact = document.querySelector('#contact');
+      if (contact) {
+        const contactTimeline = gsap.timeline({
+          scrollTrigger: {
+            trigger: contact,
+            start: 'top 72%',
+            toggleActions: 'play none none reverse',
+          },
+        });
+
+        contactTimeline
+          .fromTo('.contact__copy h2', {
+            autoAlpha: 0,
+            y: 32,
+            clipPath: 'inset(0 0 18% 0)',
+          }, {
+            autoAlpha: 1,
+            y: 0,
+            clipPath: 'inset(0 0 0 0)',
+            duration: 0.75,
+            ease: 'power3.out',
+          }, 0)
+          .fromTo('.contact__copy > p:not(.eyebrow)', { autoAlpha: 0, y: 18 }, {
+            autoAlpha: 1, y: 0, duration: 0.5,
+          }, 0.16)
+          .fromTo('.contact-email, .contact-availability', { autoAlpha: 0, y: 14 }, {
+            autoAlpha: 1, y: 0, duration: 0.45, stagger: 0.12,
+          }, 0.28)
+          .fromTo('.contact-form label', { autoAlpha: 0, y: 18 }, {
+            autoAlpha: 1, y: 0, duration: 0.48, stagger: 0.09,
+          }, 0.2)
+          .fromTo('.contact-form > button, .contact-form .form-note', {
+            autoAlpha: 0,
+            y: 14,
+          }, {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.42,
+            stagger: 0.1,
+          }, 0.62);
+      }
     });
 
-    const refresh = window.setTimeout(() => ScrollTrigger.refresh(), 300);
+    const refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 350);
     return () => {
-      window.clearTimeout(refresh);
+      window.clearTimeout(refreshTimer);
       context.revert();
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
       if (lenis) {
         gsap.ticker.remove(ticker);
         lenis.destroy();
@@ -167,7 +504,6 @@ function useScrollMotion(enabled) {
     };
   }, [enabled]);
 }
-
 function navigateTo(id) {
   const target = document.getElementById(id);
   if (!target) return;
@@ -263,7 +599,7 @@ function Hero() {
 function About() {
   return <section id="about" className="about section">
     <div className="section-heading"><span>01 / ABOUT ME</span><span>A LITTLE ABOUT THE PERSON BEHIND THE SCREEN</span></div>
-    <div className="about__grid">
+    <div className="about__grid"><span className="about__construction-line" aria-hidden="true" />
       <div className="about__title" data-reveal><p className="eyebrow">GET TO KNOW ME</p><h2>Hi, I'm<br/><span>Asnor Ali.</span></h2></div>
       <div className="about__copy" data-reveal>
         <p className="eyebrow">ABOUT / 001</p>
@@ -277,14 +613,20 @@ function About() {
 }
 
 function Workspace() {
-  const process=[['01','Discover','Understand the goal, the audience, and what the experience needs to do.',Compass],['02','Design','Shape the structure, visual direction, and interactions around the idea.',DraftingCompass],['03','Develop','Build, test, and refine a responsive experience with care.',Code2]];
+  const process = [
+    ['01', 'Planning', 'Define the goal, audience, scope, and what success should look like.', Compass],
+    ['02', 'Design', 'Shape the visual direction, page structure, and interaction details.', DraftingCompass],
+    ['03', 'Development', 'Turn the approved direction into a responsive, working website.', Code2],
+    ['04', 'Testing', 'Check the experience across devices, browsers, and real interactions.', TestTube2],
+    ['05', 'Deployment', 'Prepare the final build and make the finished experience available.', Rocket],
+  ];
   return <section id="workspace" className="workspace section">
     <div className="section-heading"><span>02 / CREATIVE WORKSPACE</span><span>IDEAS INTO EXPERIENCES</span></div>
     <div className="workspace__intro" data-reveal><div><p className="eyebrow">HOW I APPROACH THE WORK</p><h2>A little music.<br/><span>A lot of ideas.</span></h2></div><p>Every project starts with curiosity. I like exploring how structure, visuals, and small interactions can make a digital experience feel clear and memorable.</p></div>
     <div className="workspace__grid">
       <article className="glass-card glass-card--process" data-reveal>
-        <div className="card-top"><span className="eyebrow">THE CREATIVE WORKSPACE</span><span>01 — 03</span></div>
-        <div className="process-list">{process.map(([number,title,copy,Icon])=><div className="process-step" key={number}><small>{number}</small><i><Icon size={20}/></i><div><h3>{title}</h3><p>{copy}</p></div></div>)}</div>
+        <div className="card-top"><span className="eyebrow">THE BUILD SEQUENCE</span><span>01 — 05</span></div>
+        <div className="process-list process-list--timeline">{process.map(([number,title,copy,Icon])=><div className="process-step" data-step={number} key={number}><small>{number}</small><i><Icon size={20}/></i><div><h3>{title}</h3><p>{copy}</p></div></div>)}</div>
         <svg className="workspace-path" viewBox="0 0 520 180" fill="none" aria-hidden="true"><path className="story-path" d="M12 145 C110 145 105 18 210 38 S325 165 395 88 S470 28 508 55" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
       </article>
       <article className="glass-card glass-card--exploring" data-reveal>
