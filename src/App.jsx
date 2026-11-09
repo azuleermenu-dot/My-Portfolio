@@ -145,13 +145,9 @@ function useScrollMotion(enabled) {
       // and profile card in layers instead of using one generic fade.
       const hero = document.querySelector('#home');
       if (hero) {
+        // Hero assembly plays on entry; the rest of the page remains scroll-driven.
         const heroTimeline = gsap.timeline({
           defaults: { ease: 'power3.out' },
-          scrollTrigger: {
-            trigger: hero,
-            start: 'top top',
-            toggleActions: 'play none none reverse',
-          },
         });
 
         heroTimeline
