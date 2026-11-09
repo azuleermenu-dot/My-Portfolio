@@ -192,3 +192,15 @@
     display: none;
   }
 }
+
+
+/* High-visibility construction progress UI and scroll assembly sweeps */
+.construction-status{position:fixed;z-index:80;right:22px;bottom:20px;display:grid;grid-template-columns:auto auto;align-items:center;gap:5px 14px;min-width:174px;padding:11px 14px 12px;border:1px solid rgba(111,190,255,.3);border-radius:10px;color:#d9edff;background:rgba(3,12,25,.88);box-shadow:0 12px 40px rgba(0,0,0,.28),inset 0 1px rgba(255,255,255,.05);backdrop-filter:blur(16px);pointer-events:none}
+.construction-status>span{color:#75caff;font:8px var(--mono,monospace);letter-spacing:.16em}
+.construction-status>strong{color:#b6cbe2;font:8px var(--mono,monospace);letter-spacing:.1em;text-align:right}
+.construction-status>i{grid-column:1/-1;display:block;height:2px;overflow:hidden;background:rgba(120,174,225,.18)}
+.construction-status__progress{display:block;width:100%;height:100%;background:linear-gradient(90deg,#55aaff,#a4e6ff);transform:scaleX(0)}
+.construction-sweep{position:absolute;z-index:5;top:0;left:clamp(22px,7vw,110px);right:clamp(22px,7vw,110px);height:2px;pointer-events:none;background:linear-gradient(90deg,transparent,#65bdff 18%,#c2edff 50%,#65bdff 82%,transparent);box-shadow:0 0 18px rgba(92,185,255,.42);transform:scaleX(0)}
+main>section[id]{position:relative}
+@media(max-width:760px){.construction-status{right:12px;bottom:12px;min-width:148px;padding:9px 11px 10px;opacity:.94}}
+@media(prefers-reduced-motion:reduce){.construction-sweep,.construction-status__progress{transform:none!important}}
