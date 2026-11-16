@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Asnor Ali">
+  <rect width="64" height="64" rx="15" fill="#0b0b0a"/>
+  <path d="M8 49 22 15h7l14 34h-8l-3-8H19l-3 8H8Zm13-14h9l-4.5-12L21 35Z" fill="#d2a86b"/>
+  <path d="M38 49V15h7v27h12v7H38Z" fill="#eee9df"/>
+  <path d="M8 55h48" stroke="#d2a86b" stroke-width="1.5" opacity=".7"/>
+</svg>
