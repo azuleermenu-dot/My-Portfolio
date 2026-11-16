@@ -10,6 +10,16 @@ export const projects = [
     demoUrl: 'https://kdyyn-market.vercel.app',
   },
   {
+    number: 'MASJID-AMANAH',
+    category: 'COMMUNITY / MOSQUE WEBSITE CONCEPT',
+    title: 'MASJID\nAMANAH',
+    description: 'An independently developed, unofficial website concept for Masjid Amanah. It explores mosque information, prayer times, programs, Islamic learning, Madrasah education with a consent-based graduate directory, announcements, events, donations, gallery, and admin content management. Public details remain pending confirmation; this is not the mosque’s official website.',
+    technologies: ['Next.js', 'React', 'TypeScript', 'Supabase'],
+    tone: 'identity',
+    href: 'https://github.com/azuleermenu-dot/Masjid-Amanah-Mosque-',
+    demoUrl: null,
+  },
+  {
     number: '02',
     category: 'WEB / CONCEPT PROJECT',
     title: 'WICKED\\nCOFFEE',
