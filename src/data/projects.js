@@ -1,6 +1,16 @@
 export const projects = [
   {
     number: '01',
+    category: 'COMMUNITY / MOSQUE WEBSITE CONCEPT',
+    title: 'MASJID\\nAMANAH',
+    description: 'An independently developed, unofficial website concept for Masjid Amanah. It explores mosque information, prayer times, programs, Islamic learning, Madrasah education with a consent-based graduate directory, announcements, events, donations, gallery, and admin content management. Public details remain pending confirmation; this is not the mosque’s official website.',
+    technologies: ['Next.js', 'React', 'TypeScript', 'Supabase'],
+    tone: 'identity',
+    href: 'https://github.com/azuleermenu-dot/Masjid-Amanah-Mosque-',
+    demoUrl: null,
+  },
+  {
+    number: '02',
     category: 'WEB / MARKETPLACE PROJECT',
     title: 'KDYNN\\nMARKET',
     description: 'A digital marketplace project focused on a clear storefront experience, product discovery, and responsive presentation.',
@@ -10,17 +20,7 @@ export const projects = [
     demoUrl: 'https://kdyyn-market.vercel.app',
   },
   {
-    number: 'MASJID-AMANAH',
-    category: 'COMMUNITY / MOSQUE WEBSITE CONCEPT',
-    title: 'MASJID\nAMANAH',
-    description: 'An independently developed, unofficial website concept for Masjid Amanah. It explores mosque information, prayer times, programs, Islamic learning, Madrasah education with a consent-based graduate directory, announcements, events, donations, gallery, and admin content management. Public details remain pending confirmation; this is not the mosque’s official website.',
-    technologies: ['Next.js', 'React', 'TypeScript', 'Supabase'],
-    tone: 'identity',
-    href: 'https://github.com/azuleermenu-dot/Masjid-Amanah-Mosque-',
-    demoUrl: null,
-  },
-  {
-    number: '02',
+    number: '03',
     category: 'WEB / CONCEPT PROJECT',
     title: 'WICKED\\nCOFFEE',
     description: 'A fictional coffee-brand website concept created to demonstrate an expressive, mobile-first website experience. This is a design and development concept, not the official website of a business.',
@@ -30,7 +30,7 @@ export const projects = [
     demoUrl: 'https://wicked-coffee-demo.vercel.app',
   },
   {
-    number: '03',
+    number: '04',
     category: 'WEB / FICTIONAL RESTAURANT CONCEPT',
     title: 'TALEN & TIDE',
     description: 'A fictional coastal restaurant website concept, rebranded from the earlier Ember & Salt demo. The full website experience is preserved, with illustrative menu, location, contact details, and booking interactions clearly identified as fictional portfolio content.',
@@ -40,7 +40,7 @@ export const projects = [
     demoUrl: null,
   },
   {
-    number: '04',
+    number: '05',
     category: 'EDTECH / IN DEVELOPMENT',
     title: 'MUNI',
     description: 'A student-focused study planner and review platform in development, bringing schedules, reminders, learning resources, flashcards, and practice activities into one experience.',
@@ -50,7 +50,7 @@ export const projects = [
     demoUrl: null,
   },
   {
-    number: '05',
+    number: '06',
     category: 'GAME / SYSTEMS DEVELOPMENT',
     title: 'ROBLOX STUDIO\\nPROJECT',
     description: 'A Roblox game-development project exploring gameplay systems, eggs, pets, plots, and player-owned pens.',
@@ -60,7 +60,7 @@ export const projects = [
     demoUrl: null,
   },
   {
-    number: '06',
+    number: '07',
     category: 'MOBILE / TRANSPORT APP CONCEPT',
     title: 'INSTA\\nWAY',
     description: 'An Android-first Philippine commute and navigation app concept exploring maps, routes, and practical transport information.',
