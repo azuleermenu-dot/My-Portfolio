@@ -47,31 +47,62 @@ export default function App() {
     if (!track) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const elements = track.querySelectorAll('.reveal');
+    const sections = Array.from(track.querySelectorAll(':scope > section'));
+    const observers = [];
 
-    if (reduceMotion) {
-      elements.forEach((element) => element.classList.add('is-visible'));
-      return;
-    }
+    // Each slide is its own vertical scroll container. Observe each slide's
+    // reveal elements against that slide (not the outer horizontal track).
+    // This is the key fix that makes reveals trigger while scrolling vertically
+    // inside a slide on phones, tablets, and desktop.
+    sections.forEach((section) => {
+      const elements = Array.from(section.querySelectorAll('.reveal'));
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        entry.target.classList.toggle('is-visible', entry.isIntersecting);
+      if (reduceMotion) {
+        elements.forEach((element) => element.classList.add('is-visible'));
+        return;
+      }
+
+      // Add a restrained stagger to repeated rows/cards without delaying
+      // unrelated elements across the whole page.
+      const groups = [
+        '.story__chapters',
+        '.projects',
+        '.service-list',
+        '.care-plans',
+        '.care-terms',
+        '.credentials__module-grid',
+      ];
+
+      groups.forEach((selector) => {
+        section.querySelectorAll(selector).forEach((group) => {
+          Array.from(group.children)
+            .filter((child) => child.classList.contains('reveal'))
+            .forEach((child, index) => {
+              child.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 65}ms`);
+            });
+        });
       });
-    }, {
-      root: track,
-      threshold: 0.08,
-      rootMargin: '0px',
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle('is-visible', entry.isIntersecting);
+        });
+      }, {
+        root: section,
+        threshold: 0.08,
+        rootMargin: '0px 0px -3% 0px',
+      });
+
+      elements.forEach((element) => observer.observe(element));
+      observers.push(observer);
     });
 
-    elements.forEach((element) => observer.observe(element));
-
-    // The hero uses its own entrance choreography; make it visible immediately.
+    // Hero has a dedicated entrance treatment in the existing stylesheet.
     track.querySelectorAll('.hero__content').forEach((element) => {
       element.classList.add('is-visible');
     });
 
-    return () => observer.disconnect();
+    return () => observers.forEach((observer) => observer.disconnect());
   }, []);
 
   const goToSlide = useCallback((index) => {
@@ -112,6 +143,14 @@ export default function App() {
   return (
     <div className="site-shell">
       <Navigation onNavigate={goToSection} activeSlide={activeSlide} />
+      <div className="portfolio-progress" aria-hidden="true">
+        <span style={{ transform: `scaleX(${(activeSlide + 1) / slideIds.length})` }} />
+      </div>
+      <div className="slide-index" aria-label={`Section ${activeSlide + 1} of ${slideIds.length}`}>
+        <strong>{String(activeSlide + 1).padStart(2, '0')}</strong>
+        <i />
+        <small>{String(slideIds.length).padStart(2, '0')}</small>
+      </div>
       <ChatAssistant />
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
         <Hero />
