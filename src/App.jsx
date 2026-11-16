@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { animate, inView, stagger } from 'motion';
 import Navigation from './components/Navigation';
 import Hero from './components/Hero';
 import Story from './components/Story';
@@ -17,6 +16,7 @@ export default function App() {
   const trackRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
 
+  // Keep the navigation state in sync with horizontal touch / mouse scrolling.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -31,6 +31,7 @@ export default function App() {
     };
     track.addEventListener('scroll', updateActiveSlide, { passive: true });
     window.addEventListener('resize', updateActiveSlide, { passive: true });
+    updateActiveSlide();
     return () => {
       track.removeEventListener('scroll', updateActiveSlide);
       window.removeEventListener('resize', updateActiveSlide);
@@ -38,68 +39,39 @@ export default function App() {
     };
   }, []);
 
+  // Reliable reveal + pull-away transitions for the horizontal slide container.
+  // IntersectionObserver toggles a class consumed by the existing CSS, so the
+  // effect is visible without relying on animation-library inline styles.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const duration = reduceMotion ? 0.01 : 0.72;
-    const easing = [0.22, 1, 0.36, 1];
+    const elements = track.querySelectorAll('.reveal');
 
-    // Entrance and exit animations are paired so elements reveal naturally
-    // in either scroll direction instead of remaining visible after leaving view.
-    const stopHero = inView('.hero__content', (element) => {
-      const controls = animate(Array.from(element.children), {
-        opacity: [0, 1],
-        y: [18, 0],
-      }, {
-        duration,
-        delay: reduceMotion ? 0 : stagger(0.1),
-        ease: easing,
+    if (reduceMotion) {
+      elements.forEach((element) => element.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('is-visible', entry.isIntersecting);
       });
+    }, {
+      root: track,
+      threshold: 0.08,
+      rootMargin: '0px',
+    });
 
-      return () => {
-        controls.stop();
-        if (!reduceMotion) {
-          animate(Array.from(element.children), { opacity: 0, y: -12 }, {
-            duration: 0.28,
-            ease: 'ease-in',
-          });
-        }
-      };
-    }, { root: track, amount: 0.15 });
+    elements.forEach((element) => observer.observe(element));
 
-    const stopReveals = inView('.reveal', (element) => {
-      animate(element, {
-        opacity: 1,
-        y: 0,
-        x: 0,
-        scale: 1,
-      }, {
-        duration,
-        ease: easing,
-      });
+    // The hero uses its own entrance choreography; make it visible immediately.
+    track.querySelectorAll('.hero__content').forEach((element) => {
+      element.classList.add('is-visible');
+    });
 
-      return () => {
-        if (reduceMotion) return;
-        // A restrained pull-away makes the reverse transition visible
-        // without making content jump or affecting document layout.
-        animate(element, {
-          opacity: 0,
-          y: -10,
-          x: 0,
-          scale: 0.99,
-        }, {
-          duration: 0.32,
-          ease: 'ease-in',
-        });
-      };
-    }, { root: track, amount: 0.08 });
-
-    return () => {
-      stopHero();
-      stopReveals();
-    };
+    return () => observer.disconnect();
   }, []);
 
   const goToSlide = useCallback((index) => {
@@ -109,7 +81,6 @@ export default function App() {
     const slide = track.children[next];
     if (!slide) return;
 
-    // Native scrolling remains reliable for touch gestures and iOS Safari.
     track.scrollTo({
       left: slide.offsetLeft,
       top: 0,
@@ -125,8 +96,14 @@ export default function App() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName)) return;
-      if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); goToSlide(activeSlide + 1); }
-      if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); goToSlide(activeSlide - 1); }
+      if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+        event.preventDefault();
+        goToSlide(activeSlide + 1);
+      }
+      if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        event.preventDefault();
+        goToSlide(activeSlide - 1);
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
@@ -137,7 +114,14 @@ export default function App() {
       <Navigation onNavigate={goToSection} activeSlide={activeSlide} />
       <ChatAssistant />
       <main className="slide-track" ref={trackRef} aria-label="Portfolio slides">
-        <Hero /><Story /><Work /><Approach /><Services /><Technology /><Credentials /><Contact />
+        <Hero />
+        <Story />
+        <Work />
+        <Approach />
+        <Services />
+        <Technology />
+        <Credentials />
+        <Contact />
       </main>
     </div>
   );
