@@ -41,24 +41,65 @@ export default function App() {
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
+
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const duration = reduceMotion ? 0.01 : 0.72;
     const easing = [0.22, 1, 0.36, 1];
 
+    // Entrance and exit animations are paired so elements reveal naturally
+    // in either scroll direction instead of remaining visible after leaving view.
     const stopHero = inView('.hero__content', (element) => {
-      animate(Array.from(element.children), { opacity: [0, 1], y: [18, 0] }, {
-        duration, delay: reduceMotion ? 0 : stagger(0.1), ease: easing,
+      const controls = animate(Array.from(element.children), {
+        opacity: [0, 1],
+        y: [18, 0],
+      }, {
+        duration,
+        delay: reduceMotion ? 0 : stagger(0.1),
+        ease: easing,
       });
+
+      return () => {
+        controls.stop();
+        if (!reduceMotion) {
+          animate(Array.from(element.children), { opacity: 0, y: -12 }, {
+            duration: 0.28,
+            ease: 'ease-in',
+          });
+        }
+      };
     }, { root: track, amount: 0.15 });
 
     const stopReveals = inView('.reveal', (element) => {
-      const controls = animate(element, { opacity: 1, y: 0 }, {
-        duration: reduceMotion ? 0.01 : 0.75, ease: easing,
+      animate(element, {
+        opacity: 1,
+        y: 0,
+        x: 0,
+        scale: 1,
+      }, {
+        duration,
+        ease: easing,
       });
-      return () => controls.stop();
+
+      return () => {
+        if (reduceMotion) return;
+        // A restrained pull-away makes the reverse transition visible
+        // without making content jump or affecting document layout.
+        animate(element, {
+          opacity: 0,
+          y: -10,
+          x: 0,
+          scale: 0.99,
+        }, {
+          duration: 0.32,
+          ease: 'ease-in',
+        });
+      };
     }, { root: track, amount: 0.08 });
 
-    return () => { stopHero(); stopReveals(); };
+    return () => {
+      stopHero();
+      stopReveals();
+    };
   }, []);
 
   const goToSlide = useCallback((index) => {
@@ -68,8 +109,7 @@ export default function App() {
     const slide = track.children[next];
     if (!slide) return;
 
-    // Use native scrolling rather than JS-driven scrollLeft animation.
-    // Safari on iOS can interrupt scripted scroll updates during touch gestures.
+    // Native scrolling remains reliable for touch gestures and iOS Safari.
     track.scrollTo({
       left: slide.offsetLeft,
       top: 0,
