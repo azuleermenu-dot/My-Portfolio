@@ -132,7 +132,8 @@
 .slide-index {
   position: fixed;
   z-index: 30;
-  right: clamp(16px,3vw,34px);
+  left: clamp(16px,3vw,34px);
+  right: auto;
   bottom: 22px;
   display: flex;
   align-items: center;
@@ -158,7 +159,7 @@
   .nav__brand-mark svg { width: 24px; height: 24px; }
   .nav__brand-copy strong { font-size: 9px; }
   .nav__brand-copy small { font-size: 6px; }
-  .slide-index { right: 14px; bottom: 14px; }
+  .slide-index { left: 14px; bottom: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1 !important; transform: none !important; filter: none !important; transition: none !important; }
