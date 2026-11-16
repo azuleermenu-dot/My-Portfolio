@@ -39,9 +39,8 @@ export default function App() {
     };
   }, []);
 
-  // Reliable reveal + pull-away transitions for the horizontal slide container.
-  // IntersectionObserver toggles a class consumed by the existing CSS, so the
-  // effect is visible without relying on animation-library inline styles.
+  // Scroll choreography for each independently scrolling horizontal panel.
+  // Reveals pull upward into focus, then lift away and fade when they leave view.
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -50,62 +49,96 @@ export default function App() {
     const sections = Array.from(track.querySelectorAll(':scope > section'));
     const observers = [];
 
-    // Each slide is its own vertical scroll container. Observe each slide's
-    // reveal elements against that slide (not the outer horizontal track).
-    // This is the key fix that makes reveals trigger while scrolling vertically
-    // inside a slide on phones, tablets, and desktop.
-    sections.forEach((section) => {
-      const elements = Array.from(section.querySelectorAll('.reveal'));
+    sections.forEach((section, sectionIndex) => {
+      const revealSelectors = [
+        '.section-label',
+        '.story__intro',
+        '.chapter',
+        '.work__intro',
+        '.project',
+        '.approach__text > *',
+        '.services__head',
+        '.service-row',
+        '.tech__layout > *',
+        '.credentials__hero',
+        '.credentials__featured',
+        '.credentials__modules',
+        '.credentials__module',
+        '.credentials__skills',
+        '.credentials__skill',
+        '.credentials__summary',
+        '.cv-card',
+        '.contact__head',
+        '.inquiry > *',
+        '.hero__content > .eyebrow',
+        '.hero__identity > .display',
+        '.hero__portrait-wrap',
+        '.hero__meta > span',
+        '.hero__socials > a',
+        '.hero__bottom > *',
+      ];
 
+      revealSelectors.forEach((selector) => {
+        section.querySelectorAll(selector).forEach((element) => element.classList.add('reveal'));
+      });
+
+      const elements = Array.from(section.querySelectorAll('.reveal'));
       if (reduceMotion) {
         elements.forEach((element) => element.classList.add('is-visible'));
         return;
       }
 
-      // Add a restrained stagger to repeated rows/cards without delaying
-      // unrelated elements across the whole page.
-      const groups = [
+      const staggerGroups = [
         '.story__chapters',
         '.projects',
         '.service-list',
-        '.care-plans',
-        '.care-terms',
+        '.tech-list',
         '.credentials__module-grid',
+        '.hero__meta',
+        '.hero__socials',
       ];
 
-      groups.forEach((selector) => {
+      staggerGroups.forEach((selector) => {
         section.querySelectorAll(selector).forEach((group) => {
           Array.from(group.children)
             .filter((child) => child.classList.contains('reveal'))
             .forEach((child, index) => {
-              child.style.setProperty('--reveal-delay', `${Math.min(index, 5) * 65}ms`);
+              child.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 85}ms`);
             });
         });
       });
 
+      // A short observer margin creates a clear exit moment before an item
+      // completely leaves the panel, instead of leaving it permanently visible.
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.remove('is-exiting');
-            entry.target.classList.add('is-visible');
+          const element = entry.target;
+          const entering = entry.isIntersecting && entry.intersectionRatio >= 0.08;
+
+          if (entering) {
+            element.classList.remove('is-exiting');
+            element.classList.add('is-visible');
           } else {
-            entry.target.classList.remove('is-visible');
-            entry.target.classList.add('is-exiting');
+            element.classList.remove('is-visible');
+            element.classList.add('is-exiting');
           }
         });
       }, {
         root: section,
-        threshold: 0.08,
-        rootMargin: '0px 0px -3% 0px',
+        threshold: [0, 0.08, 0.18],
+        rootMargin: '-8% 0px -10% 0px',
       });
 
       elements.forEach((element) => observer.observe(element));
       observers.push(observer);
-    });
 
-    // Hero has a dedicated entrance treatment in the existing stylesheet.
-    track.querySelectorAll('.hero__content').forEach((element) => {
-      element.classList.add('is-visible');
+      // Start the opening panel in its composed state. Other hero elements
+      // still animate in as they cross the reveal threshold.
+      if (sectionIndex === 0) {
+        section.querySelectorAll('.hero__content > .eyebrow').forEach((element) => {
+          element.classList.add('is-visible');
+        });
+      }
     });
 
     return () => observers.forEach((observer) => observer.disconnect());
