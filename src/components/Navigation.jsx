@@ -33,8 +33,8 @@ export default function Navigation({ onNavigate, activeSlide = 0 }) {
       >
         <span className="nav__brand-mark" aria-hidden="true">
           <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M5.5 27.5 13.1 8.5h3.4l7.6 19h-4.3l-1.4-3.8h-7.2l-1.4 3.8H5.5Zm7.1-7.2h4.4l-2.2-5.9-2.2 5.9Z" fill="currentColor"/>
-            <path d="M22 27.5V8.5h3.8v15.3h5.1v3.7H22Z" fill="#EEE9DF"/>
+            <path d="M3.5 27.5 10.5 8.5h3.2l7.2 19h-4l-1.3-3.8h-6.8l-1.3 3.8h-4Zm6.5-7.1h4.8l-2.4-6.3-2.4 6.3Z" fill="currentColor"/>
+            <path d="m15 27.5 7.2-19h3.2l7.1 19h-4l-1.2-3.8h-6.9l-1.3 3.8H15Zm6.4-7.1h4.8l-2.4-6.3-2.4 6.3Z" fill="#EEE9DF"/>
           </svg>
         </span>
         <span className="nav__brand-copy">
