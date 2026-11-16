@@ -1,0 +1,13 @@
+{
+  "name": "Asnor Ali — Freelance Web Developer",
+  "short_name": "Asnor Ali",
+  "description": "Personal portfolio of Asnor Ali, freelance web developer.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b0a",
+  "theme_color": "#0b0b0a",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
