@@ -85,7 +85,13 @@ export default function App() {
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          entry.target.classList.toggle('is-visible', entry.isIntersecting);
+          if (entry.isIntersecting) {
+            entry.target.classList.remove('is-exiting');
+            entry.target.classList.add('is-visible');
+          } else {
+            entry.target.classList.remove('is-visible');
+            entry.target.classList.add('is-exiting');
+          }
         });
       }, {
         root: section,
