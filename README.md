@@ -36,8 +36,8 @@ Project scope, timeline, and pricing are discussed based on each client's requir
 
 | # | PROJECT | DESCRIPTION |
 |---|---|---|
-| 01 | **KDYNN MARKET** | Digital marketplace project focused on storefront structure, product discovery, and responsive presentation. |
-| 02 | **MASJID AMANAH** | Independently developed, unofficial mosque website concept exploring community information, prayer times, programs, Islamic learning, Madrasah education, announcements, events, donations, gallery, and content management. |
+| 01 | **MASJID AMANAH** | Independently developed, unofficial mosque website concept exploring community information, prayer times, programs, Islamic learning, Madrasah education, announcements, events, donations, gallery, and content management. |
+| 02 | **KDYNN MARKET** | Digital marketplace project focused on storefront structure, product discovery, and responsive presentation. |
 | 03 | **WICKED COFFEE** | Fictional coffee-brand website concept focused on atmosphere, branding, and visual storytelling. |
 | 04 | **TALEN & TIDE** | Fictional coastal restaurant website concept demonstrating responsive presentation and interactive content. |
 | 05 | **MUNI** | Student study-planner and review platform currently in development. |
