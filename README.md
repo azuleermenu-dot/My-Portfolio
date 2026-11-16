@@ -36,12 +36,15 @@ Project scope, timeline, and pricing are discussed based on each client's requir
 
 | # | PROJECT | DESCRIPTION |
 |---|---|---|
-| 01 | **WICKED COFFEE** | Cinematic website concept focused on atmosphere, branding, and visual storytelling. |
-| 02 | **KDYNN MARKET** | Web project exploring a clean, usable digital storefront experience. |
-| 03 | **MUNI** | Student study-planner and review platform currently in development. |
-| 04 | **LOCAL TRANSPORT APP** | Transport application concept exploring maps, location, and route information. |
+| 01 | **KDYNN MARKET** | Digital marketplace project focused on storefront structure, product discovery, and responsive presentation. |
+| 02 | **MASJID AMANAH** | Independently developed, unofficial mosque website concept exploring community information, prayer times, programs, Islamic learning, Madrasah education, announcements, events, donations, gallery, and content management. |
+| 03 | **WICKED COFFEE** | Fictional coffee-brand website concept focused on atmosphere, branding, and visual storytelling. |
+| 04 | **TALEN & TIDE** | Fictional coastal restaurant website concept demonstrating responsive presentation and interactive content. |
+| 05 | **MUNI** | Student study-planner and review platform currently in development. |
+| 06 | **ROBLOX STUDIO PROJECT** | Game-development project exploring gameplay systems and player-owned environments. |
+| 07 | **INSTAWAY** | Android-first Philippine commute and navigation app concept exploring maps and route information. |
 
-Some entries are concepts or works in progress and are presented as portfolio projects.
+Some entries are independent concepts or works in progress. Masjid Amanah is an unofficial portfolio concept, not the mosque’s official website. Mosque-specific public information remains pending confirmation by authorized representatives.
 
 ## 04 — TECHNOLOGY
 
