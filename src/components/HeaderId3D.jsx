@@ -450,8 +450,8 @@ export default function HeaderId3D() {
     swivel.position.set(0, CARD_HEIGHT / 2 + .19, .025);
     card.add(swivel);
 
-    const strapLeft = createRibbon(scene, -.2, 1.59, new THREE.Vector3(-.43, .5, .02));
-    const strapRight = createRibbon(scene, .2, 1.59, new THREE.Vector3(.43, .5, .02));
+    const strapLeft = createRibbon(scene, -.2, 1.59, new THREE.Vector3(-.43, .46, .02));
+    const strapRight = createRibbon(scene, .2, 1.59, new THREE.Vector3(.43, .46, .02));
 
     const physics = { x: 0, z: 0, vx: 0, vz: 0, flip: 0, flipTarget: 0, pointerX: 0, pointerY: 0, pointerActive: false };
     const onPointerMove = (event) => {
@@ -524,8 +524,8 @@ export default function HeaderId3D() {
         card.rotation.y = physics.flip;
       }
 
-      const leftEnd = badgePivot.localToWorld(new THREE.Vector3(-.43, -.08, .03));
-      const rightEnd = badgePivot.localToWorld(new THREE.Vector3(.43, -.08, .03));
+      const leftEnd = badgePivot.localToWorld(new THREE.Vector3(-.43, -.20, .03));
+      const rightEnd = badgePivot.localToWorld(new THREE.Vector3(.43, -.20, .03));
       updateRibbon(strapLeft, leftEnd, dt);
       updateRibbon(strapRight, rightEnd, dt);
 
