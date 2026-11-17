@@ -1,0 +1,464 @@
+/* A real hanging, volumetric CSS-3D portfolio badge mounted to the navigation bar. */
+.nav {
+  overflow: visible !important;
+  padding-right: 138px !important;
+  z-index: 80 !important;
+}
+
+.nav-id-rig {
+  --badge-width: 126px;
+  --badge-height: 176px;
+  position: absolute;
+  top: -15px;
+  right: -118px;
+  z-index: 85;
+  width: 136px;
+  height: 286px;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.nav-id-anchor {
+  position: absolute;
+  z-index: 4;
+  top: 25px;
+  left: 50%;
+  width: 25px;
+  height: 12px;
+  border: 2px solid #b7b2a8;
+  border-radius: 6px 6px 9px 9px;
+  background: linear-gradient(90deg, #4c4b48, #e1ddd2 45%, #77736b);
+  box-shadow: 0 2px 5px #0009, inset 0 1px 1px #fff9;
+  transform: translateX(-50%);
+}
+
+.nav-id-ribbon {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  width: 48px;
+  height: 112px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(240, 209, 158, .64);
+  border-radius: 8px 8px 12px 12px;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 4px, rgba(255,255,255,.15) 4px 5px, transparent 5px 8px),
+    repeating-linear-gradient(0deg, rgba(36,24,13,.08) 0 2px, transparent 2px 4px),
+    linear-gradient(100deg, #73502d 0%, #d2a86b 48%, #805b34 100%);
+  box-shadow: 0 4px 10px rgba(0,0,0,.32), inset 0 0 0 3px rgba(45,31,17,.18);
+  transform: translateX(-50%) rotate(1.5deg);
+}
+.nav-id-ribbon span {
+  color: #24190f;
+  writing-mode: vertical-rl;
+  font: 700 6px "DM Mono", monospace;
+  letter-spacing: .16em;
+  text-shadow: 0 1px rgba(255,255,255,.25);
+}
+.nav-id-buckle {
+  position: absolute;
+  z-index: 5;
+  top: 91px;
+  left: 50%;
+  width: 34px;
+  height: 25px;
+  border: 2px solid #aaa79e;
+  border-radius: 6px 6px 9px 9px;
+  background: linear-gradient(90deg, #454541, #e0ddd5 30%, #77736b 68%, #c8c4ba);
+  box-shadow: 0 4px 8px #0008, inset 0 1px 1px #fff9;
+  transform: translateX(-50%);
+}
+.nav-id-buckle::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -8px;
+  width: 12px;
+  height: 9px;
+  border: 2px solid #bcb8ae;
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+  transform: translateX(-50%);
+}
+.nav-id-buckle i {
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  width: 10px;
+  height: 11px;
+  border: 1px solid #373735;
+  border-radius: 2px 2px 4px 4px;
+  background: linear-gradient(90deg, #77736b, #d7d2c8, #625f59);
+  transform: translateX(-50%);
+}
+
+.nav-id-pendulum {
+  position: absolute;
+  z-index: 3;
+  top: 111px;
+  left: 50%;
+  width: var(--badge-width);
+  height: var(--badge-height);
+  transform: translateX(-50%);
+  transform-origin: 50% 0;
+  animation: nav-id-pendulum-swing 5.2s ease-in-out infinite;
+  filter: drop-shadow(0 18px 13px rgba(0,0,0,.34));
+  pointer-events: auto;
+}
+.nav-id-card {
+  --badge-tilt-x: 0deg;
+  --badge-tilt-y: 0deg;
+  --badge-glare-x: 50%;
+  --badge-glare-y: 42%;
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: transparent;
+  color: #eee9df;
+  cursor: pointer;
+  perspective: 1100px;
+  transform-style: preserve-3d;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
+}
+.nav-id-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 7px;
+}
+.nav-id-extrusion {
+  position: absolute;
+  inset: 1px;
+  border: 1px solid #d3c4a6;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #9e8b6b, #3d352a 34%, #a99776 70%, #51432f);
+  box-shadow:
+    1px 1px 0 #29251f,
+    2px 2px 0 #c1b08e,
+    3px 3px 0 #40382d,
+    4px 4px 0 #8b795a,
+    5px 5px 0 #2d2820,
+    7px 10px 14px rgba(0,0,0,.4);
+  transform: translateZ(-5px);
+}
+.nav-id-edge {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  backface-visibility: hidden;
+  background: linear-gradient(180deg, #e6d4b2, #756348 45%, #d6c5a5);
+}
+.nav-id-edge--left {
+  top: 7px;
+  bottom: 7px;
+  left: 0;
+  width: 9px;
+  transform-origin: left center;
+  transform: rotateY(-90deg);
+}
+.nav-id-edge--right {
+  top: 7px;
+  bottom: 7px;
+  right: 0;
+  width: 9px;
+  transform-origin: right center;
+  transform: rotateY(90deg);
+}
+.nav-id-edge--top {
+  top: 0;
+  left: 7px;
+  right: 7px;
+  height: 9px;
+  transform-origin: center top;
+  transform: rotateX(90deg);
+}
+.nav-id-edge--bottom {
+  bottom: 0;
+  left: 7px;
+  right: 7px;
+  height: 9px;
+  transform-origin: center bottom;
+  transform: rotateX(-90deg);
+}
+
+.nav-id-body {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform-style: preserve-3d;
+  transform: rotateX(var(--badge-tilt-x)) rotateY(var(--badge-tilt-y));
+  transition: transform .68s cubic-bezier(.2,.8,.2,1);
+}
+.nav-id-card.is-flipped .nav-id-body {
+  transform: rotateX(var(--badge-tilt-x)) rotateY(calc(180deg + var(--badge-tilt-y)));
+}
+.nav-id-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 11px;
+  border: 1px solid rgba(247,231,202,.78);
+  border-radius: 12px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(210,168,107,.26), transparent 40%),
+    linear-gradient(145deg, #26231e 0%, #11110f 74%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.24),
+    inset 0 0 0 3px rgba(255,255,255,.035),
+    inset 0 -8px 20px rgba(0,0,0,.22);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.nav-id-face--front { transform: translateZ(5px); }
+.nav-id-face--back {
+  transform: rotateY(180deg) translateZ(5px);
+  background:
+    radial-gradient(circle at 8% 90%, rgba(210,168,107,.24), transparent 45%),
+    linear-gradient(150deg, #302a20, #11110f 76%);
+}
+.nav-id-topline {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 29px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(238,233,223,.2);
+}
+.nav-id-monogram {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(210,168,107,.8);
+  border-radius: 7px;
+  color: #e2bd88;
+  font: 800 9px Manrope, sans-serif;
+  letter-spacing: -.08em;
+  box-shadow: inset 0 0 8px rgba(210,168,107,.16);
+}
+.nav-id-topline > span:nth-child(2) { display: grid; gap: 3px; min-width: 0; }
+.nav-id-topline strong {
+  color: #eee4d2;
+  font: 700 6px "DM Mono", monospace;
+  letter-spacing: .12em;
+  white-space: nowrap;
+}
+.nav-id-topline small { color: #a9a197; font: 5px "DM Mono", monospace; letter-spacing: .08em; }
+.nav-id-topline > b { margin-left: auto; color: #d2a86b; font: 7px "DM Mono", monospace; }
+.nav-id-photo {
+  position: relative;
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 9px 0 8px;
+  overflow: hidden;
+  border: 1px solid rgba(210,168,107,.65);
+  border-radius: 7px;
+  background: #201b14;
+  box-shadow: 0 4px 12px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.25);
+}
+.nav-id-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: saturate(.86) contrast(1.08);
+}
+.nav-id-photo i {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255,255,255,.16), transparent 30%, transparent 70%, rgba(210,168,107,.12));
+  pointer-events: none;
+}
+.nav-id-name {
+  color: #f2ebdf;
+  font: 800 14px/1 Manrope, sans-serif;
+  letter-spacing: .035em;
+}
+.nav-id-role {
+  margin-top: 4px;
+  color: #d2a86b;
+  font: 6px "DM Mono", monospace;
+  letter-spacing: .09em;
+}
+.nav-id-divider {
+  display: block;
+  height: 1px;
+  margin: 8px 0 6px;
+  background: linear-gradient(90deg, #d2a86b, rgba(210,168,107,0));
+}
+.nav-id-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  color: #a9a197;
+  font: 5.5px "DM Mono", monospace;
+  letter-spacing: .05em;
+}
+.nav-id-footer b { color: #e1c59e; font-weight: 500; }
+.nav-id-hologram {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 12%, rgba(255,255,255,.18) 22%, transparent 32%),
+    repeating-linear-gradient(125deg, rgba(129,179,174,.08) 0 2px, transparent 2px 8px);
+  opacity: .25;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.nav-id-reflection {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--badge-glare-x) var(--badge-glare-y), rgba(255,255,255,.32), transparent 43%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.nav-id-back-logo {
+  display: block;
+  padding-bottom: 9px;
+  border-bottom: 1px solid rgba(238,233,223,.2);
+  color: #eee4d2;
+  font: 700 7px "DM Mono", monospace;
+  letter-spacing: .1em;
+}
+.nav-id-back-logo span { color: #d2a86b; }
+.nav-id-back-title {
+  display: block;
+  margin-top: 25px;
+  color: #eee9df;
+  font: 800 26px/.94 Manrope, sans-serif;
+  letter-spacing: -.08em;
+}
+.nav-id-back-title em { color: #d2a86b; font-style: normal; font-weight: 400; }
+.nav-id-back-line {
+  display: block;
+  height: 1px;
+  margin: 17px 0 10px;
+  background: linear-gradient(90deg, #d2a86b, transparent);
+}
+.nav-id-back-url { color: #e3c18f; font: 6px "DM Mono", monospace; letter-spacing: .1em; }
+.nav-id-barcode {
+  display: block;
+  height: 22px;
+  margin-top: 13px;
+  opacity: .8;
+  background: repeating-linear-gradient(90deg, #e5dccb 0 1px, transparent 1px 3px, #e5dccb 3px 5px, transparent 5px 7px);
+}
+.nav-id-face--back > small {
+  margin-top: auto;
+  color: #938a7d;
+  font: 4.5px "DM Mono", monospace;
+  letter-spacing: .04em;
+}
+.nav-id-hint {
+  position: absolute;
+  top: 286px;
+  left: 50%;
+  color: rgba(238,233,223,.58);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  font: 6px "DM Mono", monospace;
+  letter-spacing: .14em;
+}
+@keyframes nav-id-pendulum-swing {
+  0%, 100% { transform: translateX(-50%) rotateZ(-2.2deg); }
+  50% { transform: translateX(-50%) rotateZ(2.5deg); }
+}
+
+/* Wide screens: the badge hangs off the navigation bar's right shoulder. */
+@media (min-width: 1200px) {
+  .nav { padding-right: 138px !important; }
+  .nav-id-rig { right: -118px; }
+}
+
+/* Mid-size tablets: keep the badge inside the right side of the header. */
+@media (min-width: 801px) and (max-width: 1199px) {
+  .nav { width: calc(100% - 28px) !important; padding-right: 142px !important; }
+  .nav-id-rig { right: 2px; transform: scale(.92); transform-origin: top right; }
+  .nav__links { gap: clamp(9px, 1.45vw, 17px) !important; }
+  .nav__links a { font-size: 8px !important; }
+}
+
+/* Phones and portrait tablets: the lanyard is visibly clipped to the full-width header. */
+@media (max-width: 800px) {
+  .nav {
+    top: 10px !important;
+    left: 10px !important;
+    transform: none !important;
+    width: calc(100% - 20px) !important;
+    height: 56px !important;
+    padding: 0 124px 0 14px !important;
+    gap: 8px !important;
+  }
+  .nav__brand { min-width: 0; gap: 7px; }
+  .nav__brand-mark { width: 32px; height: 32px; flex-basis: 32px; }
+  .nav__brand-mark svg { width: 23px; height: 23px; }
+  .nav__brand-copy strong { font-size: 9px; }
+  .nav__brand-copy small { font-size: 5px; letter-spacing: .07em; }
+  .nav__toggle { display: grid !important; place-items: center; width: 34px; height: 38px; flex: 0 0 34px; margin-left: auto; color: var(--paper); }
+  .nav-id-rig {
+    top: -10px;
+    right: -2px;
+    width: 118px;
+    height: 252px;
+    transform: none;
+  }
+  .nav-id-ribbon { width: 39px; height: 90px; }
+  .nav-id-ribbon span { font-size: 5px; }
+  .nav-id-anchor { top: 19px; width: 22px; height: 10px; }
+  .nav-id-buckle { top: 75px; transform: translateX(-50%) scale(.86); }
+  .nav-id-pendulum {
+    top: 92px;
+    width: 104px;
+    height: 146px;
+  }
+  .nav-id-face { padding: 8px; border-radius: 10px; }
+  .nav-id-card { border-radius: 11px; }
+  .nav-id-topline { gap: 5px; min-height: 24px; padding-bottom: 5px; }
+  .nav-id-monogram { width: 21px; height: 21px; flex-basis: 21px; font-size: 7px; }
+  .nav-id-topline strong { font-size: 5px; }
+  .nav-id-topline small { font-size: 4px; }
+  .nav-id-photo { margin: 6px 0 5px; }
+  .nav-id-name { font-size: 11px; }
+  .nav-id-role { font-size: 4.5px; }
+  .nav-id-divider { margin: 6px 0 5px; }
+  .nav-id-footer { font-size: 4.5px; }
+  .nav-id-hint { top: 241px; font-size: 5px; }
+  .nav-id-back-title { margin-top: 17px; font-size: 20px; }
+  .nav-id-back-line { margin: 12px 0 8px; }
+  .nav-id-back-url { font-size: 5px; }
+  .nav-id-barcode { height: 17px; margin-top: 9px; }
+  .nav-id-face--back > small { font-size: 3.5px; }
+  .nav__links { z-index: 90 !important; }
+}
+@media (max-width: 360px) {
+  .nav { padding-right: 110px !important; }
+  .nav-id-rig { width: 106px; right: -2px; }
+  .nav-id-pendulum { width: 92px; height: 129px; top: 88px; }
+  .nav-id-hint { top: 221px; }
+  .nav__brand-copy small { display: none; }
+  .nav__brand-copy strong { font-size: 8px; }
+}
+
+/* Landscape layouts retain the same visible badge without obscuring the brand. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .nav-id-rig { transform: scale(.76); transform-origin: top right; }
+  .nav-id-hint { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-id-pendulum { animation: none !important; }
+  .nav-id-body { transition: none !important; }
+}
