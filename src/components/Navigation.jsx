@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import HeaderId3D from './HeaderId3D';
 
 const links = [
   ['story', 'Story', 1],
@@ -68,8 +67,6 @@ export default function Navigation({ onNavigate, activeSlide = 0 }) {
           <small>INDEPENDENT DEVELOPER</small>
         </span>
       </a>
-
-      <HeaderId3D />
 
       <button
         className="nav__toggle"
