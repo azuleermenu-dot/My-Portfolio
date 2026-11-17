@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Menu, X } from 'lucide-react';
+import HeaderId3D from './HeaderId3D';
 
 const links = [
   ['story', 'Story', 1],
@@ -68,63 +69,7 @@ export default function Navigation({ onNavigate, activeSlide = 0 }) {
         </span>
       </a>
 
-      <div className="nav-id-rig">
-        <span className="nav-id-anchor" aria-hidden="true" />
-        <span className="nav-id-ribbon" aria-hidden="true">
-          <span>AA · ASNOR ALI · WEB DEVELOPER</span>
-        </span>
-        <span className="nav-id-buckle" aria-hidden="true"><i /></span>
-
-        <div className="nav-id-pendulum">
-          <button
-            ref={badgeRef}
-            type="button"
-            className={`nav-id-card${flipped ? ' is-flipped' : ''}`}
-            onPointerMove={tiltBadge}
-            onPointerLeave={resetBadge}
-            onBlur={resetBadge}
-            onClick={() => setFlipped((value) => !value)}
-            aria-label={flipped ? 'Show the front of Asnor Ali’s portfolio badge' : 'Flip Asnor Ali’s hanging portfolio badge'}
-            aria-pressed={flipped}
-          >
-            <span className="nav-id-extrusion" aria-hidden="true" />
-            <span className="nav-id-edge nav-id-edge--left" aria-hidden="true" />
-            <span className="nav-id-edge nav-id-edge--right" aria-hidden="true" />
-            <span className="nav-id-edge nav-id-edge--top" aria-hidden="true" />
-            <span className="nav-id-edge nav-id-edge--bottom" aria-hidden="true" />
-
-            <span className="nav-id-body">
-              <span className="nav-id-face nav-id-face--front">
-                <span className="nav-id-topline">
-                  <span className="nav-id-monogram">AA</span>
-                  <span><strong>CREATOR PASS</strong><small>PERSONAL PORTFOLIO</small></span>
-                  <b>01</b>
-                </span>
-                <span className="nav-id-photo">
-                  <img src="/asnor-ali.webp" alt="Portrait of Asnor Ali" width="600" height="750" fetchPriority="high" decoding="async" />
-                  <i />
-                </span>
-                <strong className="nav-id-name">ASNOR ALI</strong>
-                <span className="nav-id-role">FREELANCE WEB DEVELOPER</span>
-                <span className="nav-id-divider" />
-                <span className="nav-id-footer"><span>INDEPENDENT</span><b>PH · 2026</b></span>
-                <span className="nav-id-hologram" aria-hidden="true" />
-                <span className="nav-id-reflection" aria-hidden="true" />
-              </span>
-
-              <span className="nav-id-face nav-id-face--back">
-                <span className="nav-id-back-logo">AA<span> / </span> ASNOR ALI</span>
-                <strong className="nav-id-back-title">DESIGN.<br/>DEVELOP.<br/><em>DELIVER.</em></strong>
-                <span className="nav-id-back-line" />
-                <span className="nav-id-back-url">ASNORALI.VERCEL.APP</span>
-                <span className="nav-id-barcode" aria-hidden="true" />
-                <small>PERSONAL BRAND DISPLAY · NOT AN OFFICIAL ID</small>
-              </span>
-            </span>
-          </button>
-        </div>
-        <span className="nav-id-hint">TAP TO FLIP</span>
-      </div>
+      <HeaderId3D />
 
       <button
         className="nav__toggle"
