@@ -7,6 +7,7 @@ import './styles/glass-slide.css';
 import './styles/chat-header-motion.css';
 import './styles/contribution.css';
 import './styles/motion-polish.css';
+import './styles/header-id.css';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
