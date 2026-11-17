@@ -26,7 +26,7 @@ function roundRect(ctx, x, y, width, height, radius) {
   ctx.roundRect(x, y, width, height, radius);
 }
 
-function createPortraitTextures(onTextureReady) {
+function createPortraitTextures() {
   const width = 640;
   const height = 880;
   const frontCanvas = document.createElement('canvas');
@@ -118,10 +118,7 @@ function createPortraitTextures(onTextureReady) {
     front.fillText('PH  ·  2026', 600, 811);
     front.textAlign = 'left';
 
-    const texture = new THREE.CanvasTexture(frontCanvas);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = 4;
-    onTextureReady(texture);
+    if (frontTexture) frontTexture.needsUpdate = true;
   };
 
   const backGradient = back.createLinearGradient(0, 0, width, height);
@@ -174,6 +171,11 @@ function createPortraitTextures(onTextureReady) {
   back.font = '14px Arial';
   back.fillText('PERSONAL BRAND OBJECT  ·  NOT AN OFFICIAL ID', 42, 813);
 
+  const frontTexture = new THREE.CanvasTexture(frontCanvas);
+  frontTexture.colorSpace = THREE.SRGBColorSpace;
+  frontTexture.anisotropy = 4;
+  drawFront(null);
+
   const backTexture = new THREE.CanvasTexture(backCanvas);
   backTexture.colorSpace = THREE.SRGBColorSpace;
   backTexture.anisotropy = 4;
@@ -184,11 +186,8 @@ function createPortraitTextures(onTextureReady) {
   portrait.onerror = () => drawFront(null);
   portrait.src = '/asnor-ali.webp';
 
-  // Provide a textured face immediately; replace it with the portrait once loaded.
-  drawFront(null);
-  return { backTexture };
+  return { frontTexture, backTexture };
 }
-
 function makeRoundedBody() {
   const shape = roundedShape(CARD_WIDTH, CARD_HEIGHT, .14);
   const geometry = new THREE.ExtrudeGeometry(shape, {
@@ -394,20 +393,13 @@ export default function HeaderId3D() {
     core.receiveShadow = true;
     card.add(core);
 
-    const textures = createPortraitTextures((texture) => {
-      if (disposed) {
-        texture.dispose();
-        return;
-      }
-      frontFace.material.map = texture;
-      frontFace.material.needsUpdate = true;
-    });
+    const textures = createPortraitTextures();
 
     const faceGeometry = new THREE.PlaneGeometry(CARD_WIDTH - .13, CARD_HEIGHT - .13);
     const frontFace = new THREE.Mesh(
       faceGeometry,
       new THREE.MeshPhysicalMaterial({
-        map: null,
+        map: textures.frontTexture,
         color: 0xffffff,
         roughness: .36,
         metalness: .08,
