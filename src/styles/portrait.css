@@ -1,10 +1,154 @@
-.hero__identity{display:flex;align-items:center;gap:clamp(28px,5vw,80px);width:100%}.hero__identity .display{flex:0 1 auto}.hero__portrait-wrap{flex:0 0 clamp(170px,18vw,290px);padding-top:10px}.hero__portrait-frame{position:relative;aspect-ratio:4/5;border:1px solid var(--line-strong);padding:9px;background:rgba(238,233,223,.025);overflow:hidden;box-shadow:0 20px 80px rgba(0,0,0,.28)}.hero__portrait-frame::before{content:'';position:absolute;inset:9px;z-index:2;border:1px solid rgba(238,233,223,.16);pointer-events:none}.hero__portrait{width:100%;height:100%;display:block;object-fit:cover;object-position:center top;filter:grayscale(.12) contrast(1.04);transition:transform 1s cubic-bezier(.2,.7,.2,1),filter .6s ease}.hero__portrait-frame:hover .hero__portrait{transform:scale(1.045);filter:grayscale(0) contrast(1.04)}.hero__portrait-index{position:absolute;z-index:3;left:18px;bottom:16px;font:8px 'DM Mono',monospace;letter-spacing:.1em;color:var(--paper);background:rgba(11,11,10,.76);padding:7px 9px;backdrop-filter:blur(8px)}.hero__identity::after{content:'';position:absolute;width:clamp(80px,9vw,150px);height:1px;background:var(--accent);margin-left:clamp(170px,18vw,290px);margin-top:clamp(280px,24vw,390px);opacity:.7;pointer-events:none}
-@media(max-width:800px){.hero__identity{align-items:center;gap:18px}.hero__content .display{font-size:clamp(64px,18vw,130px);flex:1;min-width:0}.hero__portrait-wrap{flex:0 0 clamp(105px,29vw,150px);padding-top:0}.hero__portrait-frame{padding:6px}.hero__portrait-frame::before{inset:6px}.hero__portrait-index{left:11px;bottom:10px;font-size:6px;padding:5px 6px}.hero__identity::after{display:none}.hero__bottom{margin-top:38px}}
-@media(prefers-reduced-motion:reduce){.hero__portrait{transition:none}}
+/* Refined portrait treatment: soft corners, warm glass, and a calm editorial frame. */
+.hero__identity {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(28px, 5vw, 78px);
+  width: 100%;
+}
+.hero__identity .display {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.hero__portrait-wrap {
+  position: relative;
+  isolation: isolate;
+  flex: 0 0 clamp(210px, 23vw, 330px);
+  margin: 0 clamp(10px, 2vw, 28px) 0 0;
+  padding: 0 0 13px;
+  transform: translateZ(0);
+  animation: portrait-float 7s ease-in-out infinite;
+}
+.hero__portrait-frame {
+  position: relative;
+  padding: 7px;
+  border-radius: 34px;
+  background: linear-gradient(145deg, rgba(242,220,184,.88), rgba(210,168,107,.22) 42%, rgba(238,233,223,.5));
+  box-shadow:
+    0 28px 75px rgba(0,0,0,.38),
+    0 8px 24px rgba(210,168,107,.12),
+    inset 0 1px 0 rgba(255,255,255,.65);
+}
+.hero__portrait-frame::before {
+  content: "";
+  position: absolute;
+  inset: -13px;
+  z-index: -1;
+  border-radius: 46px;
+  background: radial-gradient(ellipse at 50% 40%, rgba(210,168,107,.2), transparent 68%);
+  filter: blur(15px);
+}
+.hero__portrait-inner {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 28px;
+  background: #201d18;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.16);
+}
+.hero__portrait-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, transparent 54%, rgba(8,8,7,.76) 100%);
+  pointer-events: none;
+}
+.hero__portrait {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  filter: saturate(.88) contrast(1.02);
+  transform: scale(1.015);
+  transition: transform .9s cubic-bezier(.2,.7,.2,1), filter .7s ease;
+}
+.hero__portrait-wrap:hover .hero__portrait {
+  transform: scale(1.07);
+  filter: saturate(1) contrast(1.03);
+}
+.hero__portrait-label {
+  position: absolute;
+  z-index: 2;
+  left: 19px;
+  right: 19px;
+  bottom: 17px;
+  display: grid;
+  gap: 5px;
+  color: #f3ecdf;
+}
+.hero__portrait-label span {
+  font: 800 13px Manrope, sans-serif;
+  letter-spacing: .14em;
+}
+.hero__portrait-label small {
+  color: rgba(243,236,223,.72);
+  font: 7px "DM Mono", monospace;
+  letter-spacing: .13em;
+}
+.hero__portrait-caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 5px 0;
+  color: rgba(238,233,223,.5);
+  font: 7px "DM Mono", monospace;
+  letter-spacing: .13em;
+}
+@keyframes portrait-float {
+  0%, 100% { transform: translateY(0) rotate(.25deg); }
+  50% { transform: translateY(-7px) rotate(-.35deg); }
+}
+.hero__socials {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 34px;
+  position: relative;
+  z-index: 3;
+}
+.hero__socials a {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--accent);
+  font-size: 12px;
+  transition: color .2s ease, transform .2s ease;
+}
+.hero__socials a:hover { color: var(--paper); transform: translateY(-2px); }
+.hero__socials svg { color: var(--paper); }
 
-
-.hero__socials{display:flex;align-items:center;gap:24px;margin-top:34px;position:relative;z-index:3}
-.hero__socials a{display:inline-flex;align-items:center;gap:9px;color:var(--accent);font-size:12px;transition:color .2s ease,transform .2s ease}
-.hero__socials a:hover{color:var(--paper);transform:translateY(-2px)}
-.hero__socials svg{color:var(--paper)}
-@media(max-width:800px){.hero__socials{gap:16px;margin-top:24px}.hero__socials a{font-size:11px}}
+@media (max-width: 800px) {
+  .hero__identity { align-items: center; gap: 15px; }
+  .hero__content .display {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: clamp(60px, 16vw, 112px);
+  }
+  .hero__portrait-wrap {
+    flex: 0 0 clamp(112px, 31vw, 158px);
+    margin-right: 2px;
+    padding-bottom: 8px;
+  }
+  .hero__portrait-frame { padding: 5px; border-radius: 21px; }
+  .hero__portrait-frame::before { inset: -8px; border-radius: 30px; }
+  .hero__portrait-inner { border-radius: 17px; }
+  .hero__portrait-label { left: 10px; right: 8px; bottom: 10px; gap: 3px; }
+  .hero__portrait-label span { font-size: 8px; letter-spacing: .1em; }
+  .hero__portrait-label small { font-size: 4.5px; letter-spacing: .08em; }
+  .hero__portrait-caption { padding: 8px 2px 0; font-size: 5px; letter-spacing: .07em; }
+  .hero__socials { gap: 16px; margin-top: 24px; }
+  .hero__socials a { font-size: 11px; }
+  .hero__bottom { margin-top: 38px; }
+}
+@media (max-width: 380px) {
+  .hero__identity { gap: 10px; }
+  .hero__content .display { font-size: 56px; }
+  .hero__portrait-wrap { flex-basis: 108px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__portrait-wrap { animation: none; }
+  .hero__portrait { transition: none; }
+}
