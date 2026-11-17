@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 
-const CARD_WIDTH = 1.9;
-const CARD_HEIGHT = 2.62;
+const CARD_WIDTH = 2.08;
+const CARD_HEIGHT = 2.9;
 const CARD_DEPTH = 0.12;
 
 function roundedShape(width, height, radius) {
