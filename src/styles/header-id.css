@@ -3,11 +3,12 @@
   position: fixed !important;
   z-index: 100 !important;
   overflow: visible !important;
+  padding-right: 150px !important;
 }
 .header-id3d-stage {
   position: absolute;
   z-index: 110;
-  top: 32px;
+  top: -5px;
   right: -170px;
   width: 355px;
   height: 500px;
@@ -61,13 +62,13 @@
 /* Tablet: keep the full-size ID hanging just off the header's right edge. */
 @media (min-width: 801px) and (max-width: 1199px) {
   .header-id3d-stage {
-    top: 32px;
-    right: -112px;
-    width: 300px;
-    height: 450px;
+    top: -5px;
+    right: -105px;
+    width: 285px;
+    height: 430px;
   }
-  .header-id3d-hint { top: 435px; }
-  .nav { padding-right: 120px !important; }
+  .header-id3d-hint { top: 415px; }
+  .nav { padding-right: 130px !important; }
 }
 @media (max-width: 800px) {
   .nav {
@@ -79,7 +80,7 @@
     padding: 0 12px 0 14px !important;
   }
   .header-id3d-stage {
-    top: 38px;
+    top: -5px;
     right: -30px;
     width: 250px;
     height: 365px;
@@ -108,7 +109,7 @@
 }
 @media (orientation: landscape) and (max-height: 600px) {
   .header-id3d-stage {
-    top: 27px;
+    top: -5px;
     right: -125px;
     width: 255px;
     height: 365px;
