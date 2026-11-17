@@ -503,8 +503,14 @@ export default function HeaderId3D() {
       lastTime = time;
 
       if (!reducedMotion && dt > 0) {
-        const targetX = physics.pointerActive ? physics.pointerY * -.13 : 0;
-        const targetZ = physics.pointerActive ? physics.pointerX * .2 : 0;
+        // A gentle idle breeze keeps the badge visibly suspended even
+        // before the visitor touches it; pointer input adds a stronger impulse.
+        const targetX = physics.pointerActive
+          ? physics.pointerY * -.13
+          : Math.sin(time * .00072) * .035;
+        const targetZ = physics.pointerActive
+          ? physics.pointerX * .2
+          : Math.sin(time * .00054) * .06;
 
         // Damped pendulum dynamics: gravity pulls the tag down, spring tension
         // restores its rest position, and pointer impulses add natural swing.
