@@ -462,3 +462,17 @@
   .nav-id-pendulum { animation: none !important; }
   .nav-id-body { transition: none !important; }
 }
+
+.hero__identity--no-portrait {
+  display: block !important;
+  width: 100%;
+}
+.hero__identity--no-portrait .display {
+  width: fit-content;
+  max-width: 100%;
+}
+@media (max-width: 800px) {
+  .hero__identity--no-portrait .display {
+    max-width: calc(100% - 102px);
+  }
+}
