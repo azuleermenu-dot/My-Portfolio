@@ -1,0 +1,167 @@
+/* Cross-device compatibility polish. Loaded after the visual design styles. */
+html,
+body,
+#root,
+.site-shell {
+  min-width: 0;
+  min-height: 0;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+.site-shell,
+.slide-track {
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+}
+
+.slide-track {
+  width: 100%;
+  min-width: 0;
+  touch-action: pan-x pan-y;
+  -webkit-overflow-scrolling: touch;
+}
+
+.slide-track > section,
+.slide-track > footer {
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  height: 100vh;
+  height: 100svh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
+  scroll-margin: 0;
+}
+
+.slide-track > section,
+.slide-track > footer,
+.slide-track > section * {
+  min-width: 0;
+}
+
+.nav {
+  padding-left: max(13px, calc(13px + env(safe-area-inset-left, 0px)));
+  padding-right: max(13px, calc(13px + env(safe-area-inset-right, 0px)));
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+.reveal {
+  /* Avoid reserving compositor layers for every off-screen element. */
+  will-change: auto;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@media (max-width: 800px) {
+  .nav {
+    top: max(10px, env(safe-area-inset-top, 0px));
+    width: calc(100% - 22px - env(safe-area-inset-left, 0px) - env(safe-area-inset-right, 0px));
+  }
+
+  .slide-track > section:not(.hero) {
+    padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .slide-track > .hero {
+    padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .slide-index {
+    bottom: max(14px, calc(10px + env(safe-area-inset-bottom, 0px)));
+  }
+
+  /* Keep the original pull/fade choreography, but lower blur and travel
+     distance to avoid GPU stalls on lower-powered phones and tablets. */
+  .reveal {
+    transform: translate3d(0, 42px, 0) scale(.97);
+    filter: blur(7px);
+    transition:
+      opacity .72s cubic-bezier(.16, 1, .3, 1),
+      transform .82s cubic-bezier(.16, 1, .3, 1),
+      filter .72s cubic-bezier(.16, 1, .3, 1);
+  }
+
+  .reveal.is-exiting {
+    transform: translate3d(0, -30px, 0) scale(.97);
+    filter: blur(6px);
+  }
+
+  .project:active .project-visual,
+  .project:focus-within .project-visual {
+    transform: scale(1.025);
+  }
+
+  .circle-link:active {
+    transform: rotate(8deg) scale(.96);
+    background: var(--paper);
+    color: var(--bg);
+  }
+
+  .service-row:active {
+    background: #10100f;
+  }
+
+  .chapter:active .chapter__line,
+  .chapter:focus-within .chapter__line {
+    width: 20px;
+  }
+
+  .text-link:active,
+  .submit:active {
+    transform: translate3d(0, 1px, 0) scale(.99);
+  }
+}
+
+@media (max-width: 520px) {
+  .project__meta {
+    flex-wrap: wrap;
+  }
+
+  .credentials__summary,
+  .cv-card {
+    overflow-wrap: anywhere;
+  }
+
+  .hero__socials {
+    flex-wrap: wrap;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .slide-track > section:not(.hero) {
+    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .slide-track > .hero {
+    padding-bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal.is-visible,
+  .reveal.is-exiting {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
