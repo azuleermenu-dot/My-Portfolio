@@ -16,132 +16,155 @@ export default function App() {
   const trackRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
 
-  // Keep the navigation state in sync with horizontal touch / mouse scrolling.
+  // Keep the navigation state aligned with native horizontal scrolling,
+  // including viewport changes caused by mobile browser chrome or rotation.
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track) return undefined;
+
     let frame = 0;
     const updateActiveSlide = () => {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
-        const width = track.clientWidth || window.innerWidth;
-        setActiveSlide(Math.max(0, Math.min(slideIds.length - 1, Math.round(track.scrollLeft / width))));
+        const width = track.clientWidth || window.innerWidth || 1;
+        const next = Math.max(0, Math.min(slideIds.length - 1, Math.round(track.scrollLeft / width)));
+        setActiveSlide(next);
         frame = 0;
       });
     };
+
+    const visualViewport = window.visualViewport;
     track.addEventListener('scroll', updateActiveSlide, { passive: true });
     window.addEventListener('resize', updateActiveSlide, { passive: true });
+    visualViewport?.addEventListener('resize', updateActiveSlide, { passive: true });
     updateActiveSlide();
+
     return () => {
       track.removeEventListener('scroll', updateActiveSlide);
       window.removeEventListener('resize', updateActiveSlide);
+      visualViewport?.removeEventListener('resize', updateActiveSlide);
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, []);
 
-  // Scroll choreography for each independently scrolling horizontal panel.
-  // Reveals pull upward into focus, then lift away and fade when they leave view.
+  // Scroll reveals use each panel as its own vertical observer root.
+  // Older WebViews without IntersectionObserver use a scroll fallback so
+  // content is animated into view rather than remaining permanently hidden.
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track) return undefined;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const sections = Array.from(track.querySelectorAll(':scope > section'));
+    const sections = Array.from(track.children).filter((child) => child.tagName === 'SECTION');
+    const elementsBySection = [];
     const observers = [];
+    const cleanups = [];
+    const reduceMotion = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    sections.forEach((section, sectionIndex) => {
-      const revealSelectors = [
-        '.section-label',
-        '.story__intro',
-        '.chapter',
-        '.work__intro',
-        '.project',
-        '.approach__text > *',
-        '.services__head',
-        '.service-row',
-        '.tech__layout > *',
-        '.credentials__hero',
-        '.credentials__featured',
-        '.credentials__modules',
-        '.credentials__module',
-        '.credentials__skills',
-        '.credentials__skill',
-        '.credentials__summary',
-        '.cv-card',
-        '.contact__head',
-        '.inquiry > *',
-        '.hero__content > .eyebrow',
-        '.hero__identity > .display',
-        '.hero__portrait-wrap',
-        '.hero__meta > span',
-        '.hero__socials > a',
-        '.hero__bottom > *',
-      ];
+    const revealSelectors = [
+      '.section-label', '.story__intro', '.chapter', '.work__intro', '.project',
+      '.approach__text > *', '.services__head', '.service-row', '.tech__layout > *',
+      '.credentials__hero', '.credentials__featured', '.credentials__modules',
+      '.credentials__module', '.credentials__skills', '.credentials__skill',
+      '.credentials__summary', '.cv-card', '.contact__head', '.inquiry > *',
+      '.hero__content > .eyebrow', '.hero__identity > .display', '.hero__portrait-wrap',
+      '.hero__meta > span', '.hero__socials > a', '.hero__bottom > *',
+    ];
 
+    const staggerGroups = [
+      '.story__chapters', '.projects', '.service-list', '.tech-list',
+      '.credentials__module-grid', '.hero__meta', '.hero__socials',
+    ];
+
+    sections.forEach((section) => {
       revealSelectors.forEach((selector) => {
         section.querySelectorAll(selector).forEach((element) => element.classList.add('reveal'));
       });
 
       const elements = Array.from(section.querySelectorAll('.reveal'));
-      if (reduceMotion) {
-        elements.forEach((element) => element.classList.add('is-visible'));
-        return;
-      }
-
-      const staggerGroups = [
-        '.story__chapters',
-        '.projects',
-        '.service-list',
-        '.tech-list',
-        '.credentials__module-grid',
-        '.hero__meta',
-        '.hero__socials',
-      ];
+      elementsBySection.push({ section, elements });
 
       staggerGroups.forEach((selector) => {
         section.querySelectorAll(selector).forEach((group) => {
           Array.from(group.children)
             .filter((child) => child.classList.contains('reveal'))
             .forEach((child, index) => {
-              child.style.setProperty('--reveal-delay', `${Math.min(index, 6) * 85}ms`);
+              child.style.setProperty('--reveal-delay', (Math.min(index, 6) * 85) + 'ms');
             });
         });
       });
-
-      // A short observer margin creates a clear exit moment before an item
-      // completely leaves the panel, instead of leaving it permanently visible.
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const element = entry.target;
-          const entering = entry.isIntersecting && entry.intersectionRatio >= 0.08;
-
-          if (entering) {
-            element.classList.remove('is-exiting');
-            element.classList.add('is-visible');
-          } else {
-            element.classList.remove('is-visible');
-            element.classList.add('is-exiting');
-          }
-        });
-      }, {
-        root: section,
-        threshold: [0, 0.08, 0.18],
-        rootMargin: '-8% 0px -10% 0px',
-      });
-
-      elements.forEach((element) => observer.observe(element));
-      observers.push(observer);
-
-      // Start the opening panel in its composed state. Other hero elements
-      // still animate in as they cross the reveal threshold.
-      if (sectionIndex === 0) {
-        section.querySelectorAll('.hero__content > .eyebrow').forEach((element) => {
-          element.classList.add('is-visible');
-        });
-      }
     });
 
-    return () => observers.forEach((observer) => observer.disconnect());
+    const setRevealState = (element, visible) => {
+      element.classList.toggle('is-visible', visible);
+      element.classList.toggle('is-exiting', !visible);
+    };
+
+    if (reduceMotion) {
+      elementsBySection.forEach(({ elements }) => {
+        elements.forEach((element) => setRevealState(element, true));
+      });
+    } else if (typeof window.IntersectionObserver === 'function') {
+      elementsBySection.forEach(({ section, elements }) => {
+        const observer = new window.IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            setRevealState(entry.target, entry.isIntersecting && entry.intersectionRatio >= 0.06);
+          });
+        }, {
+          root: section,
+          threshold: [0, 0.06, 0.18],
+          rootMargin: '-3% 0px -4% 0px',
+        });
+
+        elements.forEach((element) => observer.observe(element));
+        observers.push(observer);
+      });
+    } else {
+      // Fallback for older Safari/WebViews: calculate visibility during
+      // each panel's own scroll, horizontal navigation, and viewport resize.
+      let fallbackFrame = 0;
+      const updateFallback = () => {
+        if (fallbackFrame) return;
+        fallbackFrame = window.requestAnimationFrame(() => {
+          fallbackFrame = 0;
+          const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+          elementsBySection.forEach(({ section, elements }) => {
+            const sectionRect = section.getBoundingClientRect();
+            const panelIsVisible = sectionRect.right > 0 && sectionRect.left < viewportWidth;
+            const inset = Math.min(36, sectionRect.height * 0.05);
+            const top = sectionRect.top + inset;
+            const bottom = sectionRect.bottom - inset;
+
+            elements.forEach((element) => {
+              const rect = element.getBoundingClientRect();
+              setRevealState(element, panelIsVisible && rect.bottom > top && rect.top < bottom);
+            });
+          });
+        });
+      };
+
+      const passive = { passive: true };
+      sections.forEach((section) => {
+        section.addEventListener('scroll', updateFallback, passive);
+        cleanups.push(() => section.removeEventListener('scroll', updateFallback));
+      });
+      track.addEventListener('scroll', updateFallback, passive);
+      window.addEventListener('resize', updateFallback, passive);
+      window.visualViewport?.addEventListener('resize', updateFallback, passive);
+      cleanups.push(() => track.removeEventListener('scroll', updateFallback));
+      cleanups.push(() => window.removeEventListener('resize', updateFallback));
+      cleanups.push(() => window.visualViewport?.removeEventListener('resize', updateFallback));
+      cleanups.push(() => {
+        if (fallbackFrame) window.cancelAnimationFrame(fallbackFrame);
+      });
+      updateFallback();
+    }
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+      cleanups.forEach((cleanup) => cleanup());
+    };
   }, []);
 
   const goToSlide = useCallback((index) => {
@@ -151,11 +174,23 @@ export default function App() {
     const slide = track.children[next];
     if (!slide) return;
 
-    track.scrollTo({
-      left: slide.offsetLeft,
-      top: 0,
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-    });
+    // Measure relative to the scroll track; offsetParent can differ between
+    // Safari and Chromium when nested horizontal panels are used.
+    const targetLeft = track.scrollLeft
+      + slide.getBoundingClientRect().left
+      - track.getBoundingClientRect().left;
+    const reducedMotion = typeof window.matchMedia === 'function'
+      && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (typeof track.scrollTo === 'function') {
+      track.scrollTo({
+        left: targetLeft,
+        top: 0,
+        behavior: reducedMotion ? 'auto' : 'smooth',
+      });
+    } else {
+      track.scrollLeft = targetLeft;
+    }
   }, []);
 
   const goToSection = useCallback((id) => {
