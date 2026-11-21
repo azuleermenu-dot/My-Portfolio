@@ -274,7 +274,6 @@ export default function App() {
         event.preventDefault();
         goToSlide(slideIds.length - 1);
       } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
-      if (event.key === 'Home') {\n        event.preventDefault();\n        goToSlide(0);\n      } else if (event.key === 'End') {\n        event.preventDefault();\n        goToSlide(slideIds.length - 1);\n      } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
         event.preventDefault();
         goToSlide(activeSlide + 1);
       }
