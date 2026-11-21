@@ -262,7 +262,18 @@ export default function App() {
 
   useEffect(() => {
     const onKeyDown = (event) => {
-      if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName)) return;
+      const target = event.target;
+      const isTyping = target?.isContentEditable
+        || /INPUT|TEXTAREA|SELECT/.test(target?.tagName || '');
+      if (event.altKey || event.ctrlKey || event.metaKey || isTyping) return;
+
+      if (event.key === 'Home') {
+        event.preventDefault();
+        goToSlide(0);
+      } else if (event.key === 'End') {
+        event.preventDefault();
+        goToSlide(slideIds.length - 1);
+      } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
       if (event.key === 'Home') {\n        event.preventDefault();\n        goToSlide(0);\n      } else if (event.key === 'End') {\n        event.preventDefault();\n        goToSlide(slideIds.length - 1);\n      } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
         event.preventDefault();
         goToSlide(activeSlide + 1);
