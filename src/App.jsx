@@ -105,40 +105,45 @@ export default function App() {
         elements.forEach((element) => setRevealState(element, true));
       });
     } else if (typeof window.IntersectionObserver === 'function') {
-      elementsBySection.forEach(({ section, elements }) => {
-        const observer = new window.IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            setRevealState(entry.target, entry.isIntersecting && entry.intersectionRatio >= 0.06);
-          });
-        }, {
-          root: section,
-          threshold: [0, 0.06, 0.18],
-          rootMargin: '-3% 0px -4% 0px',
+      // Observe all reveal targets against the horizontal track itself.
+      // Each slide is a nested vertical scroller; using the real track as the
+      // common root also accounts for the currently visible horizontal panel.
+      const observer = new window.IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const visible = entry.isIntersecting && entry.intersectionRatio >= 0.025;
+          setRevealState(entry.target, visible);
         });
-
-        elements.forEach((element) => observer.observe(element));
-        observers.push(observer);
+      }, {
+        root: track,
+        threshold: [0, 0.025, 0.08],
+        rootMargin: '-2% 0px -2% 0px',
       });
+
+      elementsBySection.forEach(({ elements }) => {
+        elements.forEach((element) => observer.observe(element));
+      });
+      observers.push(observer);
     } else {
-      // Fallback for older Safari/WebViews: calculate visibility during
-      // each panel's own scroll, horizontal navigation, and viewport resize.
+      // Fallback for older Safari/WebViews: calculate visibility during each
+      // panel's own vertical scroll, horizontal navigation, and viewport resize.
       let fallbackFrame = 0;
       const updateFallback = () => {
         if (fallbackFrame) return;
         fallbackFrame = window.requestAnimationFrame(() => {
           fallbackFrame = 0;
-          const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+          const viewportWidth = track.clientWidth || window.innerWidth || 1;
+          const viewportHeight = track.clientHeight || window.innerHeight || 1;
 
           elementsBySection.forEach(({ section, elements }) => {
             const sectionRect = section.getBoundingClientRect();
-            const panelIsVisible = sectionRect.right > 0 && sectionRect.left < viewportWidth;
-            const inset = Math.min(36, sectionRect.height * 0.05);
-            const top = sectionRect.top + inset;
-            const bottom = sectionRect.bottom - inset;
+            const panelIsVisible = sectionRect.right > 1 && sectionRect.left < viewportWidth - 1;
+            const top = sectionRect.top + Math.min(24, viewportHeight * 0.025);
+            const bottom = sectionRect.bottom - Math.min(24, viewportHeight * 0.025);
 
             elements.forEach((element) => {
               const rect = element.getBoundingClientRect();
-              setRevealState(element, panelIsVisible && rect.bottom > top && rect.top < bottom);
+              const visible = panelIsVisible && rect.bottom > top && rect.top < bottom;
+              setRevealState(element, visible);
             });
           });
         });
@@ -193,6 +198,63 @@ export default function App() {
     }
   }, []);
 
+  // Explicit horizontal swipe fallback for mobile browsers with nested
+  // horizontal/vertical scrollers. Native scrolling remains the primary path;
+  // this only steps a slide when the browser did not move the track itself.
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return undefined;
+
+    let gesture = null;
+    const interactiveSelector = 'a, button, input, textarea, select, [contenteditable="true"]';
+
+    const onPointerDown = (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      if (event.target?.closest?.(interactiveSelector)) return;
+
+      const width = track.clientWidth || 1;
+      gesture = {
+        pointerId: event.pointerId,
+        startX: event.clientX,
+        startY: event.clientY,
+        startLeft: track.scrollLeft,
+        startIndex: Math.max(0, Math.min(slideIds.length - 1, Math.round(track.scrollLeft / width))),
+      };
+    };
+
+    const finishGesture = (event) => {
+      if (!gesture || (event.pointerId != null && event.pointerId !== gesture.pointerId)) return;
+
+      const current = gesture;
+      gesture = null;
+
+      const deltaX = event.clientX - current.startX;
+      const deltaY = event.clientY - current.startY;
+      const horizontalSwipe = Math.abs(deltaX) >= 52 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25;
+      const nativeTrackMoved = Math.abs(track.scrollLeft - current.startLeft) > (track.clientWidth || 1) * 0.14;
+
+      if (horizontalSwipe && !nativeTrackMoved) {
+        goToSlide(current.startIndex + (deltaX < 0 ? 1 : -1));
+      }
+    };
+
+    const cancelGesture = () => {
+      gesture = null;
+    };
+
+    track.addEventListener('pointerdown', onPointerDown, { passive: true });
+    track.addEventListener('pointerup', finishGesture, { passive: true });
+    track.addEventListener('pointercancel', cancelGesture, { passive: true });
+    track.addEventListener('lostpointercapture', cancelGesture, { passive: true });
+
+    return () => {
+      track.removeEventListener('pointerdown', onPointerDown);
+      track.removeEventListener('pointerup', finishGesture);
+      track.removeEventListener('pointercancel', cancelGesture);
+      track.removeEventListener('lostpointercapture', cancelGesture);
+    };
+  }, [goToSlide]);
+
   const goToSection = useCallback((id) => {
     const index = slideIds.indexOf(id);
     if (index !== -1) goToSlide(index);
@@ -201,7 +263,7 @@ export default function App() {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.altKey || event.ctrlKey || event.metaKey || /INPUT|TEXTAREA|SELECT/.test(event.target?.tagName)) return;
-      if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+      if (event.key === 'Home') {\n        event.preventDefault();\n        goToSlide(0);\n      } else if (event.key === 'End') {\n        event.preventDefault();\n        goToSlide(slideIds.length - 1);\n      } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
         event.preventDefault();
         goToSlide(activeSlide + 1);
       }
