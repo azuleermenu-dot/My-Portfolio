@@ -165,3 +165,116 @@ canvas {
     transition: none !important;
   }
 }
+
+
+/* Real touch-device affordances: translate hover-only feedback into
+   deliberate press/focus states without changing the desktop interaction. */
+@media (hover: none), (pointer: coarse) {
+  .project:active .project-visual,
+  .project:focus-within .project-visual {
+    transform: scale(1.035);
+  }
+
+  .circle-link:active,
+  .circle-link:focus-visible {
+    transform: rotate(9deg) scale(.96);
+    background: var(--paper);
+    color: var(--bg);
+  }
+
+  .chapter:active .chapter__line,
+  .chapter:focus-within .chapter__line {
+    width: 20px;
+  }
+
+  .service-row:active,
+  .service-row:focus-within {
+    background: rgba(255, 255, 255, .055);
+  }
+
+  .service-row:active .service-row__arrow,
+  .service-row:focus-within .service-row__arrow {
+    transform: translate3d(3px, -3px, 0);
+  }
+
+  .hero__portrait-wrap:active .hero__portrait,
+  .hero__portrait-wrap:focus-within .hero__portrait {
+    transform: scale(1.05);
+    filter: saturate(1) contrast(1.03);
+  }
+
+  .nav__links a:active::after,
+  .nav__links a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .text-link:active,
+  .submit:active,
+  .credentials__download:active,
+  .cv-card__button:active {
+    opacity: .78;
+    transform: translate3d(0, 1px, 0) scale(.985);
+  }
+}
+
+/* Keep entrance and exit motion legible on small touch screens while
+   limiting expensive blur work that can stutter on mobile GPUs. */
+@media (max-width: 800px) {
+  .reveal {
+    transform: translate3d(0, 54px, 0) scale(.975);
+    filter: blur(5px);
+    transition:
+      opacity .68s cubic-bezier(.16, 1, .3, 1),
+      transform .78s cubic-bezier(.16, 1, .3, 1),
+      filter .68s cubic-bezier(.16, 1, .3, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    filter: blur(0);
+  }
+
+  .reveal.is-exiting {
+    opacity: 0;
+    transform: translate3d(0, -38px, 0) scale(.975);
+    filter: blur(4px);
+    transition-delay: 0ms;
+  }
+
+  .slide-track {
+    scroll-padding-left: 0;
+    scroll-padding-right: 0;
+    overscroll-behavior-x: none;
+  }
+
+  .slide-track > section,
+  .slide-track > footer {
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+  }
+}
+
+/* Short landscape screens (phones and compact tablets) need room for
+   both the navigation and the bottom system gesture area. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .nav {
+    top: max(6px, env(safe-area-inset-top, 0px));
+    height: 44px;
+  }
+
+  .slide-track > section:not(.hero),
+  .slide-track > .hero {
+    padding-top: 62px;
+    padding-bottom: calc(46px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .hero__meta {
+    top: 58px;
+  }
+
+  .slide-index {
+    bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  }
+}
+
